@@ -133,10 +133,10 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
           src={project.images[currentImgIdx]} 
           alt={project.title}
           initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 0.4, scale: 1 }}
+          animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.6 }}
-          className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+          className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
         />
       </AnimatePresence>
       
@@ -164,15 +164,13 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
         </>
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-      
-      <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 pointer-events-none">
-        <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.4em]">{project.client}</span>
+      <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 pointer-events-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+        <span className="text-[8px] font-bold text-white/60 uppercase tracking-[0.4em]">{project.client}</span>
         <span className="text-[10px] font-black text-white uppercase tracking-widest">{project.title}</span>
       </div>
 
       {/* Technical Marker */}
-      <div className="absolute top-4 right-4 text-[8px] font-mono text-white/10 group-hover:text-white/40 transition-colors pointer-events-none">
+      <div className="absolute top-4 right-4 text-[8px] font-mono text-white/20 group-hover:text-white/60 transition-colors pointer-events-none drop-shadow-sm">
         REF_{project.ref}
       </div>
     </motion.div>

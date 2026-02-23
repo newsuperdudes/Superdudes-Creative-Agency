@@ -78,10 +78,10 @@ export const Team: React.FC = () => {
                 src={images[currentIndex]} 
                 alt={`Gang Aesthetic ${currentIndex + 1}`} 
                 initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 0.6, scale: 1 }}
+                animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+                className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
               />
             </AnimatePresence>
             
@@ -112,9 +112,9 @@ export const Team: React.FC = () => {
             </div>
 
             <div className="absolute inset-0 bg-black/20 pointer-events-none"></div>
-            <div className="absolute bottom-12 left-12 pointer-events-none">
+            <div className="absolute bottom-12 left-12 pointer-events-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-tight">Human Collective</h3>
-              <p className="text-[10px] font-medium uppercase tracking-[0.6em] text-white/20">Anti-Digital Unit</p>
+              <p className="text-[10px] font-medium uppercase tracking-[0.6em] text-white/40">Anti-Digital Unit</p>
             </div>
           </div>
         </div>
