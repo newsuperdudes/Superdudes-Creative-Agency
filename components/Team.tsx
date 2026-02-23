@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { assetStorage } from '../src/services/storage';
 
 const defaultImages = [
   "https://images.unsplash.com/photo-1549492423-400259a2e574?q=80&w=1921&auto=format&fit=crop",
@@ -14,15 +15,19 @@ export const Team: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const savedImages: string[] = [];
-    for (let i = 0; i < 10; i++) {
-      const saved = localStorage.getItem(`sd_asset_team_${i}`);
-      if (saved) savedImages.push(saved);
-    }
+    const loadImages = async () => {
+      const savedImages: string[] = [];
+      for (let i = 0; i < 10; i++) {
+        const saved = await assetStorage.getItem(`sd_asset_team_${i}`);
+        if (saved) savedImages.push(saved);
+      }
+      
+      if (savedImages.length > 0) {
+        setImages(savedImages);
+      }
+    };
     
-    if (savedImages.length > 0) {
-      setImages(savedImages);
-    }
+    loadImages();
   }, []);
 
   const nextImage = () => {
@@ -76,7 +81,7 @@ export const Team: React.FC = () => {
                 animate={{ opacity: 0.6, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 w-full h-full object-cover grayscale group-hover:opacity-80 transition-opacity duration-1000"
+                className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
               />
             </AnimatePresence>
             

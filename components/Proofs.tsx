@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { assetStorage } from '../src/services/storage';
 
 interface Project {
   id: string;
@@ -102,34 +103,6 @@ const DEFAULT_PROJECTS: Project[] = [
     ],
     objective: "Awaiting artifact deployment.",
     materials: ["Unknown"]
-  },
-  {
-    id: "07",
-    ref: "SD/24/PR-07",
-    title: "EMPTY SLOT 07",
-    client: "PENDING",
-    year: "2024",
-    category: "UNASSIGNED",
-    images: [
-      "https://picsum.photos/seed/sd07/1920/1080",
-      "https://picsum.photos/seed/sd07b/1920/1080"
-    ],
-    objective: "Awaiting artifact deployment.",
-    materials: ["Unknown"]
-  },
-  {
-    id: "08",
-    ref: "SD/24/PR-08",
-    title: "EMPTY SLOT 08",
-    client: "PENDING",
-    year: "2024",
-    category: "UNASSIGNED",
-    images: [
-      "https://picsum.photos/seed/sd08/1920/1080",
-      "https://picsum.photos/seed/sd08b/1920/1080"
-    ],
-    objective: "Awaiting artifact deployment.",
-    materials: ["Unknown"]
   }
 ];
 
@@ -152,7 +125,7 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: idx * 0.05 }}
-      className="group relative aspect-[3/4] bg-zinc-900 overflow-hidden border border-white/5"
+      className="group relative aspect-video bg-zinc-900 overflow-hidden border border-white/5"
     >
       <AnimatePresence mode="wait">
         <motion.img 
@@ -210,29 +183,33 @@ export const Proofs: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
 
   useEffect(() => {
-    const merged = DEFAULT_PROJECTS.map(p => {
-      const override: Partial<Project> = {};
-      
-      const title = localStorage.getItem(`sd_asset_project_${p.id}_meta_title`);
-      const client = localStorage.getItem(`sd_asset_project_${p.id}_meta_client`);
-      const ref = localStorage.getItem(`sd_asset_project_${p.id}_meta_ref`);
-      const objective = localStorage.getItem(`sd_asset_project_${p.id}_meta_objective`);
+    const loadMerged = async () => {
+      const merged = await Promise.all(DEFAULT_PROJECTS.map(async (p) => {
+        const override: Partial<Project> = {};
+        
+        const title = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_title`);
+        const client = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_client`);
+        const ref = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_ref`);
+        const objective = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_objective`);
 
-      if (title) override.title = title;
-      if (client) override.client = client;
-      if (ref) override.ref = ref;
-      if (objective) override.objective = objective;
+        if (title) override.title = title;
+        if (client) override.client = client;
+        if (ref) override.ref = ref;
+        if (objective) override.objective = objective;
 
-      const images: string[] = [];
-      for (let i = 0; i < 10; i++) {
-        const img = localStorage.getItem(`sd_asset_project_${p.id}_img_${i}`);
-        if (img) images.push(img);
-      }
-      if (images.length > 0) override.images = images;
+        const images: string[] = [];
+        for (let i = 0; i < 10; i++) {
+          const img = await assetStorage.getItem(`sd_asset_project_${p.id}_img_${i}`);
+          if (img) images.push(img);
+        }
+        if (images.length > 0) override.images = images;
 
-      return { ...p, ...override };
-    });
-    setProjects(merged);
+        return { ...p, ...override };
+      }));
+      setProjects(merged);
+    };
+    
+    loadMerged();
   }, []);
 
   return (
@@ -251,7 +228,7 @@ export const Proofs: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
           {projects.map((project, idx) => (
             <ProofCard key={project.id} project={project} idx={idx} />
           ))}

@@ -1,12 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
+import { assetStorage } from '../src/services/storage';
 
 export const Philosophy: React.FC = () => {
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('sd_asset_philosophy');
-    if (saved) setBgImage(saved);
+    const loadBg = async () => {
+      const saved = await assetStorage.getItem('sd_asset_philosophy');
+      if (saved) setBgImage(saved);
+    };
+    
+    loadBg();
   }, []);
 
   return (
@@ -34,8 +39,12 @@ export const Philosophy: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-24 items-start">
           <div>
-            <h2 className="text-[12vw] lg:text-[8vw] font-black tracking-[-0.06em] leading-[0.85] mb-12 uppercase flex items-baseline">
-              Offline<br/>Only<span className="inline-block w-[0.15em] h-[0.15em] bg-black rounded-full ml-[0.05em] animate-pulse"></span>
+            <h2 className="text-[12vw] lg:text-[8vw] font-black tracking-[-0.06em] leading-[0.85] mb-12 uppercase">
+              Offline<br/>
+              <span className="inline-flex items-baseline">
+                Only
+                <span className="inline-block w-[0.15em] h-[0.15em] bg-black rounded-full ml-[0.15em] animate-[blink_1s_infinite]"></span>
+              </span>
             </h2>
             <div className="h-2 w-32 bg-black"></div>
           </div>

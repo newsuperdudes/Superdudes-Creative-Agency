@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { assetStorage } from '../src/services/storage';
 
 interface AssetSlot {
   key: string;
@@ -10,13 +11,10 @@ interface AssetSlot {
 }
 
 const GLOBAL_SLOTS: AssetSlot[] = [
-  { key: 'manifest', label: 'Manifesto Visual', description: 'Supporting imagery for the "No Screens" section.' },
-  { key: 'philosophy', label: 'Philosophy Backdrop', description: 'Atmospheric visual behind REALITY text.' },
   { key: 'team', label: 'Unit Collective', description: 'Group/Studio representation for the Unit block.', count: 10 },
-  { key: 'proof', label: 'Proofs of Existence', description: 'Physical artifacts and evidence of work.', count: 10 },
 ];
 
-const PROJECT_IDS = ["01", "02", "03", "04", "05", "06", "07", "08"]; // Reduced to 8 projects
+const PROJECT_IDS = ["01", "02", "03", "04", "05", "06"];
 
 export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,46 +30,62 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
     const isAuth = sessionStorage.getItem('sd_admin_auth') === 'true';
     if (isAuth) setIsAuthenticated(true);
 
-    const loadedPreviews: { [key: string]: string } = {};
-    const loadedMeta: { [key: string]: string } = {};
-    
-    // Load global slots
-    GLOBAL_SLOTS.forEach(slot => {
-      if (slot.count) {
-        for (let i = 0; i < slot.count; i++) {
-          const key = `${slot.key}_${i}`;
-          const val = localStorage.getItem(`sd_asset_${key}`);
+    const loadData = async () => {
+      // Migration from localStorage to IndexedDB
+      const keys = Object.keys(localStorage);
+      for (const key of keys) {
+        if (key.startsWith('sd_asset_')) {
+          const val = localStorage.getItem(key);
+          if (val) {
+            await assetStorage.setItem(key, val);
+            localStorage.removeItem(key);
+          }
+        }
+      }
+
+      const loadedPreviews: { [key: string]: string } = {};
+      const loadedMeta: { [key: string]: string } = {};
+      
+      // Load global slots
+      for (const slot of GLOBAL_SLOTS) {
+        if (slot.count) {
+          for (let i = 0; i < slot.count; i++) {
+            const key = `${slot.key}_${i}`;
+            const val = await assetStorage.getItem(`sd_asset_${key}`);
+            if (val) loadedPreviews[key] = val;
+          }
+        } else {
+          const val = await assetStorage.getItem(`sd_asset_${slot.key}`);
+          if (val) loadedPreviews[slot.key] = val;
+        }
+      }
+
+      // Load project data
+      for (const pid of PROJECT_IDS) {
+        // Images
+        for (let i = 0; i < 10; i++) {
+          const key = `project_${pid}_img_${i}`;
+          const val = await assetStorage.getItem(`sd_asset_${key}`);
           if (val) loadedPreviews[key] = val;
         }
-      } else {
-        const val = localStorage.getItem(`sd_asset_${slot.key}`);
-        if (val) loadedPreviews[slot.key] = val;
+        // Metadata
+        for (const field of ['title', 'client', 'objective', 'materials', 'ref', 'year', 'category']) {
+          const key = `project_${pid}_meta_${field}`;
+          const val = await assetStorage.getItem(`sd_asset_${key}`);
+          if (val) loadedMeta[key] = val;
+        }
       }
-    });
 
-    // Load project data
-    PROJECT_IDS.forEach(pid => {
-      // Images
-      for (let i = 0; i < 10; i++) {
-        const key = `project_${pid}_img_${i}`;
-        const val = localStorage.getItem(`sd_asset_${key}`);
-        if (val) loadedPreviews[key] = val;
-      }
-      // Metadata
-      ['title', 'client', 'objective', 'materials', 'ref'].forEach(field => {
-        const key = `project_${pid}_meta_${field}`;
-        const val = localStorage.getItem(`sd_asset_${key}`);
-        if (val) loadedMeta[key] = val;
-      });
-    });
+      setPreviews(loadedPreviews);
+      setMetadata(loadedMeta);
+    };
 
-    setPreviews(loadedPreviews);
-    setMetadata(loadedMeta);
+    loadData();
   }, []);
 
-  const handleMetaChange = (pid: string, field: string, value: string) => {
+  const handleMetaChange = async (pid: string, field: string, value: string) => {
     const key = `project_${pid}_meta_${field}`;
-    localStorage.setItem(`sd_asset_${key}`, value);
+    await assetStorage.setItem(`sd_asset_${key}`, value);
     setMetadata(prev => ({ ...prev, [key]: value }));
   };
 
@@ -92,18 +106,18 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
-        setError("File too large. Keep it under 2MB for local storage limits.");
+        setError("File too large. Maximum size is 2MB.");
         return;
       }
 
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = async () => {
         try {
           const result = reader.result as string;
-          localStorage.setItem(`sd_asset_${key}`, result);
+          await assetStorage.setItem(`sd_asset_${key}`, result);
           setPreviews(prev => ({ ...prev, [key]: result }));
         } catch (err) {
-          setError("Storage limit exceeded. Try clearing other assets or using smaller files.");
+          setError("Storage limit exceeded. Try clearing other assets.");
         }
       };
       reader.onerror = () => setError("Read error.");
@@ -111,15 +125,16 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
     }
   };
 
-  const deleteAsset = (key: string) => {
-    localStorage.removeItem(`sd_asset_${key}`);
+  const deleteAsset = async (key: string) => {
+    await assetStorage.removeItem(`sd_asset_${key}`);
     const next = { ...previews };
     delete next[key];
     setPreviews(next);
   };
 
-  const hardReset = () => {
+  const hardReset = async () => {
     if (window.confirm("Erase all custom assets? This will reset the site to defaults.")) {
+      await assetStorage.clear();
       localStorage.clear();
       window.location.reload();
     }
@@ -188,17 +203,20 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
             onClick={() => setActiveTab('global')}
             className={`px-8 py-4 text-[10px] uppercase tracking-widest transition-all border-r border-white/5 whitespace-nowrap ${activeTab === 'global' ? 'bg-white text-black font-bold' : 'text-white/40 hover:text-white'}`}
           >
-            General Assets
+            Team & General
           </button>
-          {PROJECT_IDS.map(pid => (
-            <button 
-              key={pid}
-              onClick={() => setActiveTab(pid)}
-              className={`px-8 py-4 text-[10px] uppercase tracking-widest transition-all border-r border-white/5 whitespace-nowrap ${activeTab === pid ? 'bg-white text-black font-bold' : 'text-white/40 hover:text-white'}`}
-            >
-              Project {pid}
-            </button>
-          ))}
+          {PROJECT_IDS.map(pid => {
+            const title = metadata[`project_${pid}_meta_title`] || `Project ${pid}`;
+            return (
+              <button 
+                key={pid}
+                onClick={() => setActiveTab(pid)}
+                className={`px-8 py-4 text-[10px] uppercase tracking-widest transition-all border-r border-white/5 whitespace-nowrap ${activeTab === pid ? 'bg-white text-black font-bold' : 'text-white/40 hover:text-white'}`}
+              >
+                {title.length > 15 ? title.substring(0, 12) + '...' : title}
+              </button>
+            );
+          })}
         </div>
 
         {/* Error Bar */}
@@ -212,6 +230,37 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
         <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
           {activeTab === 'global' ? (
             <div className="space-y-16">
+              {/* Project Quick Access */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-white/60">Project Management</h3>
+                  <div className="h-[1px] flex-grow bg-white/5"></div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {PROJECT_IDS.map(pid => {
+                    const title = metadata[`project_${pid}_meta_title`] || `Project ${pid}`;
+                    const img = previews[`project_${pid}_img_0`];
+                    return (
+                      <button 
+                        key={pid}
+                        onClick={() => setActiveTab(pid)}
+                        className="bg-white/5 border border-white/10 p-4 hover:border-white/40 transition-all text-left group"
+                      >
+                        <div className="aspect-video bg-black mb-4 overflow-hidden">
+                          {img ? (
+                            <img src={img} className="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-all" alt="" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[8px] text-white/10 uppercase tracking-widest">No Image</div>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-bold uppercase tracking-widest block mb-1">{title}</span>
+                        <span className="text-[8px] text-white/20 uppercase tracking-widest">Edit Case Data →</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {GLOBAL_SLOTS.map(slot => (
                 <div key={slot.key} className="space-y-6">
                   <div className="flex items-center gap-4">
@@ -271,6 +320,16 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
                     label="Reference ID" 
                     value={metadata[`project_${activeTab}_meta_ref`] || ''} 
                     onChange={(val) => handleMetaChange(activeTab, 'ref', val)} 
+                  />
+                  <MetaInput 
+                    label="Year" 
+                    value={metadata[`project_${activeTab}_meta_year`] || ''} 
+                    onChange={(val) => handleMetaChange(activeTab, 'year', val)} 
+                  />
+                  <MetaInput 
+                    label="Category" 
+                    value={metadata[`project_${activeTab}_meta_category`] || ''} 
+                    onChange={(val) => handleMetaChange(activeTab, 'category', val)} 
                   />
                   <div className="md:col-span-2">
                     <MetaInput 
@@ -372,7 +431,7 @@ const AssetCard: React.FC<{
       )}
     </div>
     
-    <div className={`relative bg-black border border-white/5 overflow-hidden group ${compact ? 'aspect-square' : 'aspect-video'}`}>
+    <div className={`relative bg-black border border-white/5 overflow-hidden group aspect-video`}>
       {preview ? (
         <img src={preview} className="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-100 transition-all duration-700" alt="Preview" />
       ) : (

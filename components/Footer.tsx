@@ -58,9 +58,8 @@ export const Footer: React.FC = () => {
           </div>
           
           <div className="flex gap-16 items-center">
-            {['Instagram', 'LinkedIn'].map(social => (
-              <a key={social} href="#" className="text-[11px] font-medium uppercase tracking-[0.4em] text-black/40 hover:text-black transition-all border-b border-black/10 pb-1">{social}</a>
-            ))}
+            <a href="https://www.instagram.com/superdudes.agency" target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium uppercase tracking-[0.4em] text-black/40 hover:text-black transition-all border-b border-black/10 pb-1">Instagram</a>
+            <a href="https://www.linkedin.com/company/101257231/admin/dashboard/" target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium uppercase tracking-[0.4em] text-black/40 hover:text-black transition-all border-b border-black/10 pb-1">LinkedIn</a>
           </div>
         </div>
       </div>

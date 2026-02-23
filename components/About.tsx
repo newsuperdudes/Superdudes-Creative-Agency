@@ -1,13 +1,18 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { assetStorage } from '../src/services/storage';
 
 export const About: React.FC = () => {
   const [bgImage, setBgImage] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    const saved = localStorage.getItem('sd_asset_manifest');
-    if (saved) setBgImage(saved);
+    const loadBg = async () => {
+      const saved = await assetStorage.getItem('sd_asset_manifest');
+      if (saved) setBgImage(saved);
+    };
+    
+    loadBg();
   }, []);
 
   return (
