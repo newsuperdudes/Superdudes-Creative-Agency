@@ -31,9 +31,9 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
     if (isAuth) setIsAuthenticated(true);
 
     const loadData = async () => {
-      // Migration from localStorage to IndexedDB
-      const keys = Object.keys(localStorage);
-      for (const key of keys) {
+      // Migration from localStorage to Server
+      const lsKeys = Object.keys(localStorage);
+      for (const key of lsKeys) {
         if (key.startsWith('sd_asset_')) {
           const val = localStorage.getItem(key);
           if (val) {
@@ -41,6 +41,37 @@ export const AssetManager: React.FC<{ onClose: () => void }> = ({ onClose }) => 
             localStorage.removeItem(key);
           }
         }
+      }
+
+      // Migration from IndexedDB to Server
+      try {
+        const DB_NAME = 'SuperdudesStorage';
+        const STORE_NAME = 'assets';
+        const request = indexedDB.open(DB_NAME);
+        request.onsuccess = (event) => {
+          const db = (event.target as IDBOpenDBRequest).result;
+          if (db.objectStoreNames.contains(STORE_NAME)) {
+            const transaction = db.transaction(STORE_NAME, 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const getAllRequest = store.getAll();
+            const getAllKeysRequest = store.getAllKeys();
+            
+            getAllRequest.onsuccess = async () => {
+              const values = getAllRequest.result;
+              const keys = getAllKeysRequest.result;
+              for (let i = 0; i < keys.length; i++) {
+                const key = keys[i] as string;
+                const val = values[i] as string;
+                await assetStorage.setItem(key, val);
+              }
+              // Clear IndexedDB after migration
+              const deleteTransaction = db.transaction(STORE_NAME, 'readwrite');
+              deleteTransaction.objectStore(STORE_NAME).clear();
+            };
+          }
+        };
+      } catch (e) {
+        console.error("IndexedDB migration failed", e);
       }
 
       const loadedPreviews: { [key: string]: string } = {};
