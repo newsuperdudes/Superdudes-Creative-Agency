@@ -1,4 +1,5 @@
 
+// Server-side storage sync
 let assetsCache: Record<string, string> | null = null;
 
 async function fetchAssets() {

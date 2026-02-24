@@ -1,4 +1,5 @@
 
+// Asset Manager with Server Migration
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { assetStorage } from '../src/services/storage';
