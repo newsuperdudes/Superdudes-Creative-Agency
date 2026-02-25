@@ -78,7 +78,7 @@ export const Team: React.FC = () => {
               ))}
             </div>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               <motion.img
                 key={currentIndex}
                 src={images[currentIndex]}

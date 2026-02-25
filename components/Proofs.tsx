@@ -133,7 +133,7 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.img
           key={currentImgIdx}
           src={project.images[currentImgIdx]}
