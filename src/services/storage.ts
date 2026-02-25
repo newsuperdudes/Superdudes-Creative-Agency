@@ -15,14 +15,54 @@ export const assetStorage = {
 
     if (value.startsWith('data:image')) {
       try {
-        // Convert base64 to Blob
-        const response = await fetch(value);
-        const blob = await response.blob();
-        const fileExt = value.split(';')[0].split('/')[1];
-        const fileName = `${key}_${Date.now()}.${fileExt}`;
+        // Compress the image before uploading to reduce size and fix mobile lag
+        const { blob, fileName, fileExt } = await new Promise<{ blob: Blob, fileName: string, fileExt: string }>((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 1200;
+            const MAX_HEIGHT = 1200;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height = Math.round((height * MAX_WIDTH) / width);
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width = Math.round((width * MAX_HEIGHT) / height);
+                height = MAX_HEIGHT;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              // Output as highly optimized WebP
+              canvas.toBlob((b) => {
+                if (b) {
+                  const ext = 'webp';
+                  const name = `${key}_${Date.now()}.${ext}`;
+                  resolve({ blob: b, fileName: name, fileExt: ext });
+                } else {
+                  reject('Canvas conversion failed');
+                }
+              }, 'image/webp', 0.85);
+            } else {
+              reject('No canvas context');
+            }
+          };
+          img.onerror = reject;
+          img.src = value;
+        });
+
         const filePath = `uploads/${fileName}`;
 
-        // Upload to Supabase Storage
+        // Upload optimized WebP to Supabase Storage
         const { error: uploadError } = await supabase.storage
           .from(BUCKET_NAME)
           .upload(filePath, blob, {
@@ -36,7 +76,7 @@ export const assetStorage = {
         const { data: { publicUrl } } = supabase.storage
           .from(BUCKET_NAME)
           .getPublicUrl(filePath);
-        
+
         finalValue = publicUrl;
       } catch (error) {
         console.error('Error uploading image to Supabase Storage:', error);
