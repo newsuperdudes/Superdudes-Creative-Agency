@@ -72,13 +72,7 @@ export const Team: React.FC = () => {
 
         <div className="order-1 md:order-2 relative group overflow-hidden shadow-sm reveal" style={{ transitionDelay: '0.3s' }}>
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-black">
-            <div style={{ position: 'absolute', opacity: 0.01, pointerEvents: 'none', width: '1px', height: '1px', overflow: 'hidden', zIndex: -1 }} aria-hidden="true">
-              {images.map((src, idx) => (
-                <img key={`preload-${idx}`} src={src} alt="preload" />
-              ))}
-            </div>
-
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               <motion.img
                 key={currentIndex}
                 src={images[currentIndex]}

@@ -127,13 +127,7 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
       transition={{ delay: idx * 0.05 }}
       className="group relative aspect-video bg-zinc-900 overflow-hidden border border-white/5"
     >
-      <div style={{ position: 'absolute', opacity: 0.01, pointerEvents: 'none', width: '1px', height: '1px', overflow: 'hidden', zIndex: -1 }} aria-hidden="true">
-        {project.images.map((src, idx) => (
-          <img key={`preload-${idx}`} src={src} alt="preload" />
-        ))}
-      </div>
-
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         <motion.img
           key={currentImgIdx}
           src={project.images[currentImgIdx]}
