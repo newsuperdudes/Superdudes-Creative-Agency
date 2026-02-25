@@ -72,23 +72,24 @@ export const Team: React.FC = () => {
 
         <div className="order-1 md:order-2 relative group overflow-hidden shadow-sm reveal" style={{ transitionDelay: '0.3s' }}>
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-black">
-            <div className="absolute inset-0 w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0">
+            <div className="hidden">
               {images.map((src, idx) => (
-                <motion.img
-                  key={src + idx}
-                  src={src}
-                  alt={`Gang Aesthetic ${idx + 1}`}
-                  initial={false}
-                  animate={{
-                    opacity: idx === currentIndex ? 1 : 0,
-                    scale: idx === currentIndex ? 1 : 1.05,
-                    zIndex: idx === currentIndex ? 1 : 0
-                  }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
-                />
+                <img key={`preload-${idx}`} src={src} alt="preload" />
               ))}
             </div>
+
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentIndex}
+                src={images[currentIndex]}
+                alt={`Gang Aesthetic ${currentIndex + 1}`}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+              />
+            </AnimatePresence>
 
             {/* Gallery Controls */}
             <div className="absolute inset-0 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

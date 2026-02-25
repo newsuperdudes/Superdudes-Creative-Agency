@@ -127,23 +127,24 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
       transition={{ delay: idx * 0.05 }}
       className="group relative aspect-video bg-zinc-900 overflow-hidden border border-white/5"
     >
-      <div className="absolute inset-0 w-full h-full opacity-40 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0">
-        {project.images.map((src, i) => (
-          <motion.img
-            key={src + i}
-            src={src}
-            alt={`${project.title} ${i + 1}`}
-            initial={false}
-            animate={{
-              opacity: i === currentImgIdx ? 1 : 0,
-              scale: i === currentImgIdx ? 1 : 1.05,
-              zIndex: i === currentImgIdx ? 1 : 0
-            }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
-          />
+      <div className="hidden">
+        {project.images.map((src, idx) => (
+          <img key={`preload-${idx}`} src={src} alt="preload" />
         ))}
       </div>
+
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentImgIdx}
+          src={project.images[currentImgIdx]}
+          alt={project.title}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.6 }}
+          className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+        />
+      </AnimatePresence>
 
       {/* Navigation Areas */}
       {project.images.length > 1 && (
