@@ -24,6 +24,11 @@ export const Team: React.FC = () => {
 
       if (savedImages.length > 0) {
         setImages(savedImages);
+        // Preload images silently into browser memory to eliminate mobile gap
+        savedImages.forEach(src => {
+          const img = new Image();
+          img.src = src;
+        });
       }
     };
 
@@ -81,7 +86,7 @@ export const Team: React.FC = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+                className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-[filter] duration-1000"
               />
             </AnimatePresence>
 

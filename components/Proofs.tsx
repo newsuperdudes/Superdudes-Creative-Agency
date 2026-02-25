@@ -136,7 +136,7 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.6 }}
-          className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+          className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-[filter] duration-1000"
         />
       </AnimatePresence>
 
@@ -200,7 +200,14 @@ export const Proofs: React.FC = () => {
           const img = await assetStorage.getItem(`sd_asset_project_${p.id}_img_${i}`);
           if (img) images.push(img);
         }
-        if (images.length > 0) override.images = images;
+        if (images.length > 0) {
+          override.images = images;
+          // Preload images silently into browser memory to eliminate mobile gap
+          images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+          });
+        }
 
         return { ...p, ...override };
       }));
