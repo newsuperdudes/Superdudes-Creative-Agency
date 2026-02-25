@@ -120,43 +120,48 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: idx * 0.05 }}
       className="group relative aspect-video bg-zinc-900 overflow-hidden border border-white/5"
     >
-      <AnimatePresence mode="wait">
-        <motion.img 
-          key={currentImgIdx}
-          src={project.images[currentImgIdx]} 
-          alt={project.title}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.6 }}
-          className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
-        />
-      </AnimatePresence>
-      
+      <div className="absolute inset-0 w-full h-full opacity-40 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0">
+        {project.images.map((src, i) => (
+          <motion.img
+            key={src + i}
+            src={src}
+            alt={`${project.title} ${i + 1}`}
+            initial={false}
+            animate={{
+              opacity: i === currentImgIdx ? 1 : 0,
+              scale: i === currentImgIdx ? 1 : 1.05,
+              zIndex: i === currentImgIdx ? 1 : 0
+            }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+          />
+        ))}
+      </div>
+
       {/* Navigation Areas */}
       {project.images.length > 1 && (
         <>
-          <div 
-            className="absolute inset-y-0 left-0 w-1/2 z-30 cursor-w-resize" 
+          <div
+            className="absolute inset-y-0 left-0 w-1/2 z-30 cursor-w-resize"
             onClick={prevImg}
           />
-          <div 
-            className="absolute inset-y-0 right-0 w-1/2 z-30 cursor-e-resize" 
+          <div
+            className="absolute inset-y-0 right-0 w-1/2 z-30 cursor-e-resize"
             onClick={nextImg}
           />
-          
+
           {/* Progress Indicator */}
           <div className="absolute top-4 left-4 z-40 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             {project.images.map((_, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className={`h-[1px] transition-all duration-300 ${i === currentImgIdx ? 'w-4 bg-white' : 'w-1 bg-white/20'}`}
               />
             ))}
@@ -184,7 +189,7 @@ export const Proofs: React.FC = () => {
     const loadMerged = async () => {
       const merged = await Promise.all(DEFAULT_PROJECTS.map(async (p) => {
         const override: Partial<Project> = {};
-        
+
         const title = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_title`);
         const client = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_client`);
         const ref = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_ref`);
@@ -206,19 +211,19 @@ export const Proofs: React.FC = () => {
       }));
       setProjects(merged);
     };
-    
+
     loadMerged();
   }, []);
 
   return (
     <section id="proofs" className="py-32 md:py-64 bg-black border-t border-white/5 relative z-10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
+
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-32">
           <div className="space-y-6">
             <span className="text-[10px] font-bold uppercase tracking-[0.8em] text-white/40 block">Proofs of Existence</span>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.85] font-sans">
-              Physical<br/>Evidence.
+              Physical<br />Evidence.
             </h2>
           </div>
           <p className="text-sm md:text-lg font-medium text-white/30 uppercase tracking-[0.2em] leading-relaxed max-w-sm">

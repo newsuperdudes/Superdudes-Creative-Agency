@@ -21,12 +21,12 @@ export const Team: React.FC = () => {
         const saved = await assetStorage.getItem(`sd_asset_team_${i}`);
         if (saved) savedImages.push(saved);
       }
-      
+
       if (savedImages.length > 0) {
         setImages(savedImages);
       }
     };
-    
+
     loadImages();
   }, []);
 
@@ -40,7 +40,7 @@ export const Team: React.FC = () => {
 
   return (
     <section className="py-32 md:py-64 px-6 md:px-12 bg-white border-t border-black/5 overflow-hidden relative">
-      
+
       {/* Geometric Lines */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 w-full h-[1px] bg-black/5"></div>
@@ -52,7 +52,7 @@ export const Team: React.FC = () => {
             <span className="text-[10px] font-medium uppercase tracking-[0.8em] text-black/20">The Unit</span>
             <div className="h-[1px] w-12 bg-black/10"></div>
           </div>
-          
+
           <div className="space-y-24">
             <div className="reveal" style={{ transitionDelay: '0.2s' }}>
               <span className="text-[25vw] md:text-[15vw] xl:text-[12rem] font-black text-black block leading-[0.8] tracking-[-0.05em] uppercase">70</span>
@@ -69,31 +69,36 @@ export const Team: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="order-1 md:order-2 relative group overflow-hidden shadow-sm reveal" style={{ transitionDelay: '0.3s' }}>
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-black">
-            <AnimatePresence mode="wait">
-              <motion.img 
-                key={currentIndex}
-                src={images[currentIndex]} 
-                alt={`Gang Aesthetic ${currentIndex + 1}`} 
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
-              />
-            </AnimatePresence>
-            
+            <div className="absolute inset-0 w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0">
+              {images.map((src, idx) => (
+                <motion.img
+                  key={src + idx}
+                  src={src}
+                  alt={`Gang Aesthetic ${idx + 1}`}
+                  initial={false}
+                  animate={{
+                    opacity: idx === currentIndex ? 1 : 0,
+                    scale: idx === currentIndex ? 1 : 1.05,
+                    zIndex: idx === currentIndex ? 1 : 0
+                  }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                />
+              ))}
+            </div>
+
             {/* Gallery Controls */}
             <div className="absolute inset-0 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <button 
+              <button
                 onClick={prevImage}
                 className="w-12 h-12 rounded-full border border-white/20 bg-black/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
               >
                 <span className="text-xl">←</span>
               </button>
-              <button 
+              <button
                 onClick={nextImage}
                 className="w-12 h-12 rounded-full border border-white/20 bg-black/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
               >
@@ -104,7 +109,7 @@ export const Team: React.FC = () => {
             {/* Pagination Dots */}
             <div className="absolute bottom-6 right-12 flex gap-2">
               {images.map((_, idx) => (
-                <div 
+                <div
                   key={idx}
                   className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white w-4' : 'bg-white/20'}`}
                 ></div>
