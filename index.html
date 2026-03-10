@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<!-- team images path root: /Users/tomadertev/Documents/Jegors/Breakfast-Superdudes/public/ -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>I TESTIMONI — CoinsPaid × Superdudes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-style: normal !important;
+    }
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gold: #C9A84C;
+      --w5:  rgba(255,255,255,.05);
+      --w10: rgba(255,255,255,.10);
+      --w20: rgba(255,255,255,.20);
+      --w30: rgba(255,255,255,.30);
+      --w40: rgba(255,255,255,.40);
+      --w60: rgba(255,255,255,.60);
+    }
+    html, body {
+      width:100%; height:100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--white); color: var(--black); }
+
+    /* noise */
+    body::before {
+      content:""; position:fixed; inset:0;
+      pointer-events:none; z-index:9998;
+      opacity:.08;
+      background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+      animation: grain .4s steps(1) infinite;
+    }
+    @keyframes grain {
+      0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)}
+      20%{transform:translate(-5%,2%)} 30%{transform:translate(3%,-4%)}
+      40%{transform:translate(-2%,6%)} 50%{transform:translate(-4%,2%)}
+      60%{transform:translate(6%,0)} 70%{transform:translate(0,4%)}
+      80%{transform:translate(-6%,0)} 90%{transform:translate(4%,2%)}
+    }
+
+    /* progress bar */
+    #prog { position:fixed; right:28px; top:50%; transform:translateY(-50%);
+      width:1px; height:160px; background:var(--w5); z-index:9000; }
+    #prog-fill { width:100%; background:var(--w30); transform-origin:top; transform:scaleY(0); }
+    #prog-lbl { position:absolute; bottom:-18px; left:50%; transform:translateX(-50%);
+      font-size:7px; font-weight:700; letter-spacing:.35em; text-transform:uppercase; color:var(--w20); }
+
+    /* slide base */
+    .slide {
+      min-height:100svh; width:100%;
+      display:flex; flex-direction:column; justify-content:center;
+      position:relative; overflow:hidden;
+      border-bottom: 1px solid var(--w5);
+      padding: 80px 96px;
+    }
+    @media(max-width:768px){ .slide{ padding:60px 24px; } }
+
+    /* photo placeholder */
+    .photo-placeholder {
+      width: 100%; height: 280px; margin-top: 40px;
+      background: var(--w5); border: 1px dashed var(--w20);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--w30); font-size: 10px; text-transform: uppercase; letter-spacing: .2em;
+    }
+
+    /* user journey grid */
+    .uj-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0 48px; margin-top: 0;
+    }
+    @media(max-width:900px){ .uj-grid { grid-template-columns: 1fr; gap: 40px 0; } }
+    .uj-phase {
+      font-size: 9px; font-weight: 700; letter-spacing: .5em;
+      text-transform: uppercase; color: var(--w40);
+      border-top: 1px solid var(--w10); padding-top: 20px; margin-bottom: 24px;
+    }
+    .uj-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 14px; font-size: 13px; color: var(--w70); line-height: 1.4;
+    }
+    .uj-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--w40); flex-shrink: 0; margin-top: 5px;
+    }
+    .uj-dot--gold { background: #c8a96e; }
+    .uj-dot--bright { background: var(--white); }
+
+    /* agency hubs */
+    .hubs-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0 48px; margin-top: 24px;
+    }
+    @media(max-width:900px){ .hubs-grid { grid-template-columns: repeat(2,1fr); gap: 40px 24px; } }
+    .hub-item { border-top: 1px solid var(--w10); padding-top: 20px; }
+    .hub-ref {
+      font-size: 9px; font-weight: 700; letter-spacing: .5em;
+      text-transform: uppercase; color: var(--w20); display: block; margin-bottom: 12px;
+    }
+    .hub-city {
+      font-size: clamp(24px, 3.5vw, 48px); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -.02em; line-height: 1; color: var(--white); margin-bottom: 12px;
+    }
+    .hub-addr {
+      font-size: 9px; font-weight: 700; letter-spacing: .4em;
+      text-transform: uppercase; color: var(--w40); line-height: 1.8;
+    }
+
+    /* location carousel */
+    .loc-carousel {
+      position: relative; width: 100%; height: 400px; margin-top: 40px;
+      background: var(--black); overflow: hidden;
+    }
+    @media(max-width:768px){ .loc-carousel { height: 260px; } }
+    .loc-carousel .carousel-img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .loc-carousel .carousel-img.active { opacity: 1; }
+    .loc-controls {
+      position: absolute; bottom: 24px; right: 24px; z-index: 10;
+      display: flex; gap: 8px; align-items: center;
+    }
+    .loc-controls .cdot {
+      width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.2);
+      cursor: pointer; transition: background .3s, width .3s;
+    }
+    .loc-controls .cdot.active { background: var(--white); width: 16px; }
+    .loc-arrows {
+      position: absolute; inset: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; opacity: 0; transition: opacity .3s;
+    }
+    .loc-carousel:hover .loc-arrows { opacity: 1; }
+    .loc-arrows button {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid var(--w20); background: rgba(0,0,0,.3);
+      backdrop-filter: blur(4px); color: var(--white); font-size: 18px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s;
+    }
+    .loc-arrows button:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+
+    /* vertical accent line */
+    .vl { position:absolute; left:64px; top:0; width:1px; height:100%;
+      background:var(--w5); z-index:0; }
+    @media(max-width:768px){ .vl{ left:16px; } }
+
+    /* footer brand */
+    .sfooter { position:absolute; bottom:28px; left:96px;
+      font-size:9px; font-weight:700; letter-spacing:.5em; text-transform:uppercase;
+      color:var(--w20); }
+    @media(max-width:768px){ .sfooter{ left:24px; } }
+
+    /* slide number */
+    .snum { position:absolute; top:32px; right:96px;
+      font-size:9px; font-weight:700; letter-spacing:.4em; text-transform:uppercase;
+      color:var(--w20); }
+    @media(max-width:768px){ .snum{ right:24px; } }
+
+    /* type helpers */
+    .label {
+      font-size:10px; font-weight:700; letter-spacing:.6em;
+      text-transform:uppercase; color:var(--w30);
+    }
+    .label-gold {
+      font-size:10px; font-weight:700; letter-spacing:.6em;
+      text-transform:uppercase; color:var(--gold); opacity:.75;
+    }
+
+    /* animations */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes drawY  { from{transform:scaleY(0)} to{transform:scaleY(1)} }
+    @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .afy { animation: drawY 2s cubic-bezier(.77,0,.175,1) forwards; transform-origin:top; }
+
+    .reveal { opacity:0; transform:translateY(8px);
+      transition: opacity .9s ease-out, transform .9s ease-out; }
+    .reveal.on { opacity:1; transform:none; }
+
+    /* stagger: up to 8 children */
+    .stg > * { opacity:0; transform:translateY(8px);
+      transition: opacity .8s ease-out, transform .8s ease-out; }
+    .stg.on > *:nth-child(1){opacity:1;transform:none;transition-delay:.05s}
+    .stg.on > *:nth-child(2){opacity:1;transform:none;transition-delay:.15s}
+    .stg.on > *:nth-child(3){opacity:1;transform:none;transition-delay:.25s}
+    .stg.on > *:nth-child(4){opacity:1;transform:none;transition-delay:.35s}
+    .stg.on > *:nth-child(5){opacity:1;transform:none;transition-delay:.45s}
+    .stg.on > *:nth-child(6){opacity:1;transform:none;transition-delay:.55s}
+    .stg.on > *:nth-child(7){opacity:1;transform:none;transition-delay:.65s}
+    .stg.on > *:nth-child(8){opacity:1;transform:none;transition-delay:.75s}
+
+    /* gold rule that animates width */
+    .grule { height:1px; background:var(--gold); opacity:.4;
+      transform-origin:left; width:0;
+      transition: width 1.2s cubic-bezier(.77,0,.175,1) .1s; }
+    .grule.on { width:100%; }
+
+    /* dot */
+    .dot { width:6px; height:6px; border-radius:50%; background:var(--white);
+      animation:pulse 2.5s ease-in-out infinite; flex-shrink:0; display:inline-block; }
+
+    /* preloader */
+    #preloader {
+      position:fixed; inset:0; z-index:99999;
+      background:var(--black);
+      display:flex; justify-content:center; align-items:center;
+      transition:opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #preloader.hidden {
+      opacity:0; visibility:hidden;
+    }
+    .loader-text {
+      font-size:10px; font-weight:700; letter-spacing:.8em;
+      text-transform:uppercase; color:var(--w30);
+      animation:pulse 1.5s ease-in-out infinite;
+    }
+
+    /* ════════════════════════════════════
+       SLIDE 1 — COVER
+    ════════════════════════════════════ */
+    #s1 { justify-content:center; align-items:flex-start; }
+    #s1 .brand { font-size:clamp(11px,1vw,14px); font-weight:700;
+      letter-spacing:.5em; text-transform:uppercase; color:var(--w30);
+      margin-bottom:48px; display:flex; align-items:center; gap:12px; }
+    #s1 .brand em { color:var(--gold); opacity:.8; font-weight:800; }
+    #s1 h1 { font-size:clamp(48px,10vw,130px); font-weight:900;
+      line-height:.85; letter-spacing:-.05em; text-transform:uppercase;
+      color:var(--white); margin-bottom:40px;
+      animation:fadeUp 1.1s ease-out .1s both; }
+    #s1 .tagline { font-size:clamp(12px,1.2vw,16px); font-weight:300;
+      letter-spacing:.35em; text-transform:uppercase; color:var(--w40);
+      animation:fadeUp 1s ease-out .4s both; }
+    #s1 .tagline em { color:var(--gold); font-weight:600; }
+    #s1 .meta { position:absolute; bottom:40px; left:96px;
+      display:flex; align-items:center; gap:20px;
+      animation:fadeUp 1s ease-out .7s both; }
+    @media(max-width:768px){ #s1 .meta{ left:24px; } }
+
+    /* ════════════════════════════════════
+       SLIDE 2 — TEAM  (exact match: Breakfast-Superdudes TeamSlide)
+    ════════════════════════════════════ */
+    #s2 { padding: 0; }
+    #s2 .team-inner {
+      position:relative; z-index:1;
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:0; align-items:center;
+      width:100%; max-width:100%;
+      min-height:100svh;
+      padding: 0 96px;
+    }
+    @media(max-width:768px){ #s2 .team-inner{ grid-template-columns:1fr; padding:60px 24px; gap:40px; } }
+
+    /* left col */
+    #s2 .team-left {
+      display:flex; flex-direction:column; gap:16px;
+      padding: 80px 80px 80px 0;
+    }
+    @media(max-width:768px){ #s2 .team-left{ padding:0; } }
+
+    #s2 .unit-label {
+      font-size:10px; font-weight:700; letter-spacing:.8em;
+      text-transform:uppercase; color:var(--w30);
+    }
+    #s2 .unit-rule { height:1px; width:48px; background:var(--w10); margin-bottom:32px; }
+
+    #s2 .stats-block { display:flex; flex-direction:column; gap:64px; }
+    #s2 .big-70 {
+      font-size:clamp(100px,15vw,192px); font-weight:900;
+      line-height:.8; letter-spacing:-.05em; text-transform:uppercase;
+      color:var(--white); display:block;
+    }
+    #s2 .dudes-label {
+      font-size:clamp(14px,1.8vw,22px); font-weight:700;
+      letter-spacing:.4em; text-transform:uppercase;
+      color:var(--w60); margin-top:32px;
+    }
+    #s2 .dudes-sub {
+      font-size:10px; font-weight:700; letter-spacing:.5em;
+      text-transform:uppercase; color:var(--w20); margin-top:16px;
+    }
+    #s2 .team-stat-num {
+      font-size:clamp(28px,4vw,48px); font-weight:900;
+      line-height:1; letter-spacing:-.04em; text-transform:uppercase;
+      color:var(--white); display:block;
+    }
+    #s2 .team-stat-lbl {
+      font-size:10px; font-weight:700; letter-spacing:.4em;
+      text-transform:uppercase; color:var(--w30);
+      max-width:280px; margin-top:24px; line-height:1.7;
+    }
+
+    /* right col — portrait carousel */
+    #s2 .team-right-wrap {
+      display:flex; align-items:center; justify-content:center;
+      padding: 48px 0;
+    }
+    @media(max-width:768px){ #s2 .team-right-wrap{ padding:0; } }
+
+    #s2 .team-right {
+      position:relative;
+      width:100%;
+      max-width:480px;
+      aspect-ratio: 4/5;
+      overflow:hidden;
+      background:rgba(255,255,255,.03);
+    }
+    @media(max-width:768px){ #s2 .team-right{ max-width:100%; aspect-ratio:4/5; } }
+
+    /* crossfade via opacity */
+    #s2 .carousel-img {
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover;
+      filter:grayscale(1); opacity:0;
+      transition: opacity .7s cubic-bezier(.16,1,.3,1),
+                  filter 1s ease,
+                  transform .7s cubic-bezier(.16,1,.3,1);
+      transform: scale(1.05);
+    }
+    #s2 .carousel-img.active {
+      opacity:.6;
+      transform: scale(1);
+    }
+    #s2 .team-right:hover .carousel-img.active {
+      filter:grayscale(0); opacity:1;
+    }
+
+    /* dark overlay */
+    #s2 .carousel-overlay { position:absolute; inset:0; background:rgba(0,0,0,.2); pointer-events:none; z-index:1; }
+
+    /* bottom-left label */
+    #s2 .carousel-label {
+      position:absolute; bottom:48px; left:48px;
+      pointer-events:none; z-index:3;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.8));
+    }
+    #s2 .carousel-label h3 {
+      font-size:22px; font-weight:700; color:var(--white);
+      text-transform:uppercase; letter-spacing:-.01em; margin-bottom:6px;
+    }
+    #s2 .carousel-label p {
+      font-size:10px; font-weight:700; letter-spacing:.6em;
+      text-transform:uppercase; color:var(--w40);
+    }
+
+    /* nav dots — bottom right */
+    #s2 .carousel-dots {
+      position:absolute; bottom:24px; right:48px;
+      display:flex; gap:8px; align-items:center; z-index:3;
+    }
+    #s2 .cdot {
+      height:6px; border-radius:3px;
+      background:rgba(255,255,255,.2); cursor:pointer;
+      transition: background .3s, width .3s;
+      width:6px;
+    }
+    #s2 .cdot.active { background:var(--white); width:16px; }
+
+    /* arrow buttons — visible on group hover */
+    #s2 .carousel-arrows {
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 24px;
+      opacity:0; transition:opacity .3s;
+      z-index:3;
+    }
+    #s2 .team-right:hover .carousel-arrows { opacity:1; }
+    #s2 .c-arrow {
+      width:48px; height:48px; border-radius:50%;
+      border:1px solid var(--w20); background:rgba(0,0,0,.3);
+      backdrop-filter:blur(4px);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--white); font-size:18px; cursor:pointer;
+      transition:background .2s, border-color .2s;
+    }
+    #s2 .c-arrow:hover { background:var(--white); color:var(--black); border-color:var(--white); }
+
+    /* ════════════════════════════════════
+       SLIDE 3 — ROME PREAMBLE
+    ════════════════════════════════════ */
+    #s3 .inner { max-width:860px; position:relative; z-index:1; }
+    #s3 .hook { font-size:clamp(28px,4.5vw,58px); font-weight:900;
+      line-height:1.1; letter-spacing:-.03em; text-transform:uppercase;
+      color:var(--white); margin-bottom:40px; }
+    #s3 .hook span { color:var(--w30); }
+    #s3 .body { font-size:clamp(15px,1.8vw,22px); font-weight:600;
+      line-height:1.7; text-transform:uppercase; color:var(--w60);
+      margin-bottom:40px; letter-spacing:.05em; }
+    #s3 .quote { border-left:2px solid var(--gold);
+      padding-left:24px; margin-top:40px; }
+    #s3 .quote p { font-size:clamp(15px,1.6vw,20px); font-weight:400;
+      line-height:1.9; color:var(--w40); letter-spacing:.02em; }
+    #s3 .quote cite { font-size:10px; font-weight:700; letter-spacing:.5em;
+      text-transform:uppercase; color:var(--w20); margin-top:12px; display:block; }
+
+    /* ════════════════════════════════════
+       SLIDE 4 — CINEMATIC ROME
+    ════════════════════════════════════ */
+    #s4 .inner { max-width:900px; position:relative; z-index:1; }
+    #s4 .headline { font-size:clamp(32px,5.5vw,70px); font-weight:900;
+      line-height:1.05; letter-spacing:-.04em; text-transform:uppercase;
+      color:var(--white); margin-bottom:48px; }
+    #s4 .headline em { color:var(--gold); }
+    #s4 .body p { font-size:clamp(15px,1.8vw,22px); font-weight:600;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.05em;
+      line-height:1.7; margin-bottom:12px; }
+    #s4 .body p.bright { color:var(--white); }
+
+    /* ════════════════════════════════════
+       SLIDE 5 — CONFERENCE FATIGUE
+    ════════════════════════════════════ */
+    #s5 .inner { max-width:860px; position:relative; z-index:1; }
+    #s5 .hook { font-size:clamp(28px,4.5vw,56px); font-weight:900;
+      line-height:1.1; letter-spacing:-.03em; text-transform:uppercase;
+      color:var(--w30); margin-bottom:32px; }
+    #s5 .turn { font-size:clamp(22px,3.5vw,48px); font-weight:900;
+      line-height:1.15; letter-spacing:-.03em; text-transform:uppercase;
+      color:var(--white); margin-bottom:48px; }
+    #s5 .def { border-top:1px solid var(--w10); padding-top:32px; }
+    #s5 .def .word { font-size:clamp(12px,1.1vw,14px); font-weight:700;
+      letter-spacing:.5em; text-transform:uppercase; color:var(--gold);
+      opacity:.8; margin-bottom:12px; }
+    #s5 .def .meaning { font-size:clamp(16px,2vw,26px); font-weight:700;
+      text-transform:uppercase; letter-spacing:.05em; color:var(--w60); line-height:1.6; }
+    #s5 .def .meaning strong { color:var(--white); font-weight:900; }
+
+    /* ════════════════════════════════════
+       SLIDE 6 — TITLE CARD  (flip card)
+    ════════════════════════════════════ */
+    #s6 {
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* "A Dinner Show" label above card */
+    #s6 .s6-tag {
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 700;
+      letter-spacing: .7em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    #s6 .s6-tag::before, #s6 .s6-tag::after {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--gold); opacity: .3;
+      display: block;
+    }
+
+    /* flip card wrapper */
+    .flip-card {
+      width: min(860px, 86vw);
+      height: clamp(280px, 48vh, 460px);
+      perspective: 1400px;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+    }
+    .flip-card-inner {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(.4, 0, .2, 1);
+    }
+    .flip-card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* shared face styles */
+    .flip-face {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      border: 1px solid var(--w10);
+      padding: 56px 64px;
+    }
+    @media(max-width:768px){ .flip-face{ padding: 40px 28px; } }
+
+    .flip-face-front {
+      background: rgba(255,255,255,.02);
+    }
+    .flip-face-back {
+      background: rgba(255,255,255,.04);
+      transform: rotateY(180deg);
+    }
+
+    /* code label on each face */
+    .flip-code {
+      font-size: 9px; font-weight: 700; letter-spacing: .65em;
+      text-transform: uppercase; color: var(--w20);
+      margin-bottom: 28px; display: block;
+    }
+
+    /* big title on front face */
+    .flip-title {
+      font-size: clamp(44px, 8vw, 112px); font-weight: 900;
+      line-height: .85; letter-spacing: -.05em; text-transform: uppercase;
+      color: var(--white); font-family: 'Inter', sans-serif;
+      display: block;
+    }
+
+    /* back face title — same weight as front */
+    #s6 .s6-en {
+      font-size: clamp(44px, 8vw, 112px); font-weight: 900;
+      line-height: .85; letter-spacing: -.05em; text-transform: uppercase;
+      color: var(--white); font-family: 'Inter', sans-serif;
+      display: block;
+    }
+
+    /* tap hint */
+    .flip-hint {
+      margin-top: 28px;
+      font-size: 9px; font-weight: 700; letter-spacing: .5em;
+      text-transform: uppercase; color: var(--w20);
+      display: flex; align-items: center; gap: 10px;
+      transition: color .3s;
+    }
+    .flip-hint:hover { color: var(--w40); }
+    .flip-hint svg { opacity: .5; transition: transform .4s; }
+    .flip-card:hover .flip-hint svg { transform: rotate(180deg); }
+
+    /* ════════════════════════════════════
+       SLIDE 7 — THE KEY
+    ════════════════════════════════════ */
+    #s7 .inner { max-width:800px; position:relative; z-index:1; }
+    #s7 .headline { font-size:clamp(28px,4.5vw,56px); font-weight:900;
+      line-height:1.1; letter-spacing:-.03em; text-transform:uppercase;
+      color:var(--white); margin-bottom:40px; }
+    #s7 .card-box { border:1px solid var(--w10); padding:40px;
+      margin-bottom:40px; display:inline-flex; flex-direction:column;
+      align-items:flex-start; gap:16px; }
+    #s7 .card-word { font-size:clamp(32px,5vw,64px); font-weight:900;
+      letter-spacing:.15em; text-transform:uppercase; color:var(--gold); }
+    #s7 .card-meta { font-size:10px; font-weight:700; letter-spacing:.5em;
+      text-transform:uppercase; color:var(--w20); }
+    #s7 .card-qr { font-size:48px; opacity:.3; }
+    #s7 body-text { font-size:clamp(14px,1.5vw,18px); font-weight:600;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.05em; line-height:1.7; }
+    #s7 p { font-size:clamp(14px,1.5vw,18px); font-weight:600;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.05em; line-height:1.7; }
+
+    /* ════════════════════════════════════
+       SLIDE 8 — NEVER-ENDING SHOW
+    ════════════════════════════════════ */
+    #s8 .inner { max-width:860px; position:relative; z-index:1; }
+    #s8 .headline { font-size:clamp(32px,5vw,64px); font-weight:900;
+      line-height:1.05; letter-spacing:-.04em; text-transform:uppercase;
+      color:var(--white); margin-bottom:48px; }
+    #s8 .descriptors { display:flex; flex-direction:column; gap:20px; }
+    #s8 .d-item { display:flex; align-items:baseline; gap:20px;
+      border-bottom:1px solid var(--w5); padding-bottom:20px; }
+    #s8 .d-num { font-size:9px; font-weight:700; font-family:monospace;
+      color:var(--w20); flex-shrink:0; }
+    #s8 .d-text { font-size:clamp(16px,2.2vw,28px); font-weight:700;
+      text-transform:uppercase; color:var(--w60); letter-spacing:.03em; line-height:1.3; }
+    #s8 .d-text em { color:var(--white); font-weight:900; }
+
+    /* ════════════════════════════════════
+       SLIDE 9 — PRINCIPLES
+    ════════════════════════════════════ */
+    #s9 .inner { max-width:860px; position:relative; z-index:1; }
+    #s9 .big { font-size:clamp(28px,4.5vw,56px); font-weight:900;
+      line-height:1.1; letter-spacing:-.03em; text-transform:uppercase; }
+    #s9 .big .dim { color:var(--w30); }
+
+    /* ════════════════════════════════════
+       SLIDE 10 — THE VOICE
+    ════════════════════════════════════ */
+    #s10 .inner { max-width:860px; position:relative; z-index:1; }
+    #s10 .headline { font-size:clamp(48px,9vw,120px); font-weight:900;
+      line-height:.85; letter-spacing:-.05em; text-transform:uppercase;
+      color:var(--white); margin-bottom:40px; }
+    #s10 .headline em { color:var(--gold); }
+    #s10 .body p { font-size:clamp(15px,1.8vw,22px); font-weight:600;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.05em;
+      line-height:1.7; margin-bottom:10px; }
+
+    /* ════════════════════════════════════
+       SLIDE 11 — SETUP / SPACE
+    ════════════════════════════════════ */
+    #s11 .inner { width:100%; max-width:1100px; position:relative; z-index:1; }
+    #s11 .principles { display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:48px; }
+    @media(max-width:768px){ #s11 .principles{grid-template-columns:1fr;} }
+    #s11 .pr { border-top:1px solid var(--w10); padding-top:24px; }
+    #s11 .pr-title { font-size:10px; font-weight:700; letter-spacing:.6em;
+      text-transform:uppercase; color:var(--gold); opacity:.7; margin-bottom:16px; }
+    #s11 .pr-body { font-size:clamp(14px,1.5vw,18px); font-weight:600;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.05em; line-height:1.8; }
+
+    /* ════════════════════════════════════
+       SLIDE 12 — STATISTS / ACTORS
+    ════════════════════════════════════ */
+    #s12 .inner { max-width:860px; position:relative; z-index:1; }
+    #s12 .headline { font-size:clamp(32px,5vw,64px); font-weight:900;
+      line-height:1.05; letter-spacing:-.04em; text-transform:uppercase;
+      color:var(--white); margin-bottom:48px; }
+    #s12 .items { display:flex; flex-direction:column; gap:24px; }
+    #s12 .item { display:flex; gap:20px; align-items:flex-start; }
+    #s12 .item-n { font-size:9px; font-family:monospace; color:var(--w20); flex-shrink:0; padding-top:3px; }
+    #s12 .item-t { font-size:clamp(16px,2vw,24px); font-weight:700;
+      text-transform:uppercase; color:var(--w60); line-height:1.5; letter-spacing:.03em; }
+    #s12 .item-t strong { color:var(--white); }
+
+    /* ════════════════════════════════════
+       ACTIVITY SLIDES — shared style
+    ════════════════════════════════════ */
+    .act-slide .inner { max-width:800px; position:relative; z-index:1; }
+    .act-slide .act-tag { margin-bottom:32px; }
+    .act-slide .act-head { font-size:clamp(36px,7vw,96px); font-weight:900;
+      line-height:.9; letter-spacing:-.04em; text-transform:uppercase;
+      color:var(--white); margin-bottom:40px; }
+    .act-slide .act-head em { color:var(--gold); }
+    .act-slide .act-body { font-size:clamp(14px,1.6vw,20px); font-weight:600;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.05em; line-height:1.9; }
+    .act-slide .act-body em { color:var(--white); font-weight:800; }
+
+    @media (min-width: 1024px) {
+      .act-slide .inner {
+        max-width: 1200px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        grid-template-areas: "tag img" "head img" "body img";
+        grid-template-rows: auto auto 1fr;
+        gap: 0 60px;
+        align-items: center;
+      }
+      .act-slide .act-tag { grid-area: tag; margin-bottom: 24px; align-self: end; }
+      .act-slide .act-head { grid-area: head; margin-bottom: 32px; align-self: center; font-size: clamp(32px, 4.5vw, 64px); }
+      .act-slide .act-body { grid-area: body; margin-bottom: 0; align-self: start; }
+      .act-slide .loc-carousel,
+      .act-slide .photo-placeholder,
+      .act-slide .reveal[style*="height"] { grid-area: img; margin-top: 0 !important; max-height: 60vh !important; height: 60vh !important; justify-self: stretch; align-self:center; }
+    }
+
+    /* ════════════════════════════════════
+       SLIDE 18 — CLOSING / PORTRAIT
+    ════════════════════════════════════ */
+    #s18 { justify-content:center; align-items:center; text-align:center; }
+    #s18 .inner { position:relative; z-index:1; max-width:800px; }
+    #s18 .lines { display:flex; flex-direction:column; gap:24px; margin-bottom:64px; }
+    #s18 .line { font-size:clamp(18px,2.8vw,36px); font-weight:700;
+      text-transform:uppercase; color:var(--w40); letter-spacing:.03em; line-height:1.3; }
+    #s18 .line.bright { color:var(--white); font-weight:900; }
+    #s18 .final { margin-top:64px; }
+    #s18 .final-title { font-size:clamp(44px,8vw,100px); font-weight:900;
+      line-height:.85; letter-spacing:-.05em; text-transform:uppercase; color:var(--white);
+      margin-bottom:16px; }
+    #s18 .final-sub { font-size:clamp(11px,1vw,14px); font-weight:300;
+      letter-spacing:.4em; text-transform:uppercase; color:var(--w30); }
+    #s18 .final-sub em { color:var(--gold); }
+    #s18 .credits { margin-top:64px; border-top:1px solid var(--w10); padding-top:32px;
+      font-size:10px; font-weight:700; letter-spacing:.5em; text-transform:uppercase;
+      color:var(--w20); }
+  </style>
+</head>
+<body>
+
+  <div id="preloader"><div class="loader-text">Loading</div></div>
+
+  <div id="prog"><div id="prog-fill"></div><span id="prog-lbl">Scroll</span></div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 01 — COVER                             -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s1" class="slide">
+    <div class="vl afy"></div>
+    <div style="position:relative;z-index:1;max-width:1000px;">
+      <div class="brand reveal">
+        <div class="dot"></div>
+        <span>Superdudes <em>×</em> CoinsPaid</span>
+      </div>
+      <h1 class="reveal">Something<br>is happening<br>in Rome.</h1>
+      <p class="tagline reveal">November 2026 &nbsp;·&nbsp; By invitation only &nbsp;·&nbsp;
+        <em>A side-event for SiGMA World</em></p>
+    </div>
+    <div class="meta">
+      <span class="label" style="opacity:.35;">41.9028° N, 12.4964° E</span>
+      <div style="width:28px;height:1px;background:var(--w10);"></div>
+      <span class="label" style="opacity:.35;">Roma Aeterna</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 02 — TEAM                              -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s2" class="slide">
+    <div class="snum" style="z-index:10;">02</div>
+    <div class="team-inner">
+
+      <!-- LEFT: stats -->
+      <div class="team-left reveal">
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:48px;">
+          <span class="unit-label">The Unit</span>
+          <div class="unit-rule"></div>
+        </div>
+
+        <div class="stats-block">
+          <div class="stat-primary">
+            <span class="big-70">70</span>
+            <p class="dudes-label">top-tier dudes</p>
+            <p class="dudes-sub">(the real dude has no gender)</p>
+          </div>
+          <div class="stat-secondary">
+            <span class="team-stat-num">2,500+ yrs</span>
+            <p class="team-stat-lbl">Cumulative experience chewing through industry absurdity to deliver results.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: portrait photo carousel -->
+      <div class="team-right-wrap">
+        <div class="team-right" id="teamCarousel">
+          <!-- images injected by JS -->
+          <div class="carousel-overlay"></div>
+          <div class="carousel-arrows">
+            <button class="c-arrow" id="cPrev" aria-label="Previous">←</button>
+            <button class="c-arrow" id="cNext" aria-label="Next">→</button>
+          </div>
+          <div class="carousel-dots" id="cDots"></div>
+          <div class="carousel-label">
+            <h3>Human Collective</h3>
+            <p>Anti-Digital Unit</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 02b — AGENCY HUBS                      -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s2b" class="slide">
+    <div class="vl"></div>
+    <div class="inner">
+      <div class="label reveal" style="margin-bottom:40px;">Active Strategic Hubs</div>
+      <div class="hubs-grid stg reveal">
+        <div class="hub-item">
+          <span class="hub-ref">[HUB_LDN]</span>
+          <div class="hub-city">LONDON</div>
+          <div class="hub-addr">10 York Rd, SE1 7ND</div>
+        </div>
+        <div class="hub-item">
+          <span class="hub-ref">[HUB_BCN]</span>
+          <div class="hub-city">BARCELONA</div>
+          <div class="hub-addr">Carrer Aragó 241</div>
+        </div>
+        <div class="hub-item">
+          <span class="hub-ref">[HUB_BEG]</span>
+          <div class="hub-city">BELGRADE</div>
+          <div class="hub-addr">Kneza Mihaila 33</div>
+        </div>
+        <div class="hub-item">
+          <span class="hub-ref">[HUB_DXB]</span>
+          <div class="hub-city">DUBAI</div>
+          <div class="hub-addr">The Meydan Hotel</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════ -->
+  <!-- PROLOGUE                               -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="sprologue" class="slide">
+    <div class="snum">—</div>
+    <div class="title-wrap reveal" style="text-align:center;">
+      <div style="font-size:clamp(72px,12vw,160px);font-weight:900;letter-spacing:-.04em;text-transform:uppercase;color:var(--white);font-family:'Inter',sans-serif;">Prologue</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 03 — ROME PREAMBLE                     -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s3" class="slide">
+    <div class="vl"></div>
+    <div class="snum">03</div>
+    <div class="inner">
+      <div class="hook reveal">
+        No matter how many times<br>
+        you've been to Rome,<br>
+        <span>something still catches you.</span>
+      </div>
+      <div class="quote reveal">
+        <p>"There is no end. There is no beginning.<br>There is only the infinite passion of life."</p>
+        <cite>— Federico Fellini</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 04 — CINEMATIC ROME                    -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s4" class="slide">
+    <div class="vl"></div>
+    <div class="snum">04</div>
+    <div class="inner" style="max-width:800px; display:flex; flex-direction:column; justify-content:center; gap:0;">
+
+      <div class="reveal" style="font-size:9px;font-weight:700;letter-spacing:.5em;text-transform:uppercase;color:var(--w30);margin-bottom:32px;">
+        Federico Fellini
+      </div>
+
+      <div class="reveal" style="font-size:clamp(28px,4.5vw,58px);font-weight:300;font-style:italic;line-height:1.25;color:var(--white);margin-bottom:48px;border-left:2px solid var(--w20);padding-left:32px;">
+        "The greatest set<br>in the world."
+      </div>
+
+      <div class="grule reveal" style="max-width:280px;margin-bottom:48px;"></div>
+
+      <div class="stg reveal" style="font-size:clamp(13px,1.5vw,17px);color:var(--w60);line-height:1.8;max-width:520px;">
+        <p>The films through which we know this city<br>
+        are about people who have everything —<br>
+        and are still quietly searching for something they can't name.</p>
+      </div>
+
+      <div class="reveal" style="font-size:clamp(13px,1.5vw,17px);color:var(--white);margin-top:32px;font-weight:500;">
+        That feeling is what we're building the evening around.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 05 — CONFERENCE FATIGUE → TESTIMONI    -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s5" class="slide">
+    <div class="vl"></div>
+    <div class="snum">05</div>
+    <div class="inner">
+      <div class="turn reveal" style="margin-top:32px;">
+        Everyone is hunting contacts.<br>
+        No one is having a real conversation.
+      </div>
+      <div class="grule reveal" style="margin:40px 0;max-width:400px;"></div>
+      <div class="turn reveal" style="color:var(--white);">
+        The most interesting things<br>
+        in this city happen<br>
+        behind closed doors.
+      </div>
+      <div class="def reveal">
+        <div class="word" style="margin-top:32px;font-size:clamp(9px,1vw,11px);">testimone [tes·ti·ˈmɔ·ne] — Italian</div>
+        <div class="meaning" style="font-size:clamp(13px,1.6vw,18px);line-height:1.4;">
+          Not a spectator. Not a guest.<br>
+          <strong>A person who is truly present.</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 06 — TITLE CARD                        -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s6" class="slide">
+    <div class="snum">06</div>
+
+    <!-- label above card -->
+    <div class="s6-tag reveal">A Dinner Show</div>
+
+    <!-- flip card -->
+    <div class="flip-card reveal" id="s6-card">
+      <div class="flip-card-inner" id="s6-card-inner">
+
+        <!-- FRONT: I Testimoni -->
+        <div class="flip-face flip-face-front">
+          <span class="flip-code">[NAME_IT] // SD-06A</span>
+          <span class="flip-title">I&nbsp;Testimoni</span>
+          <span class="flip-slogan" style="font-size:12px; font-family:monospace; text-transform:uppercase; letter-spacing:0.1em; color:var(--w40); position:absolute; bottom:40px;">La città ti osserva</span>
+        </div>
+
+        <!-- BACK: The Witnesses -->
+        <div class="flip-face flip-face-back">
+          <span class="flip-code">[NAME_EN] // SD-06B</span>
+          <span class="s6-en" id="s6-witnesses">The&nbsp;Witnesses</span>
+          <span class="flip-slogan" style="font-size:12px; font-family:monospace; text-transform:uppercase; letter-spacing:0.1em; color:var(--w40); position:absolute; bottom:40px;">Город смотрит в ответ</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- tap hint -->
+    <div class="flip-hint reveal">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 12h16M14 6l6 6-6 6"/>
+      </svg>
+      Click to flip
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 12H4M10 6L4 12l6 6"/>
+      </svg>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 07 — THE KEY                           -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s7" class="slide">
+    <div class="vl"></div>
+    <div class="snum">07</div>
+    <div class="inner">
+      <div class="label reveal" style="margin-bottom:40px;">It begins before you arrive.</div>
+      <div class="headline reveal">
+        The invitation<br>is also a key.
+      </div>
+      <p class="reveal" style="margin-bottom:32px;">You scan. The lock turns. You step in.</p>
+      
+      <!-- key reference carousel -->
+      <div class="loc-carousel reveal" style="height:340px;">
+        <img src="key_1.png" class="carousel-img active" alt="Key ref 1">
+        <img src="key_2.png" class="carousel-img" alt="Key ref 2">
+        <img src="key_3.jpg" class="carousel-img" alt="Key ref 3">
+        <img src="key_4.png" class="carousel-img" alt="Key ref 4">
+        <img src="key_5.png" class="carousel-img" alt="Key ref 5">
+        <div class="loc-arrows">
+          <button class="c-prev">←</button>
+          <button class="c-next">→</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 08 — NEVER-ENDING SHOW                 -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s8" class="slide">
+    <div class="vl"></div>
+    <div class="snum">08</div>
+    <div class="inner">
+      <div class="label reveal" style="margin-bottom:40px;">The format</div>
+      <div class="headline reveal">The Never-<br>Ending Show.</div>
+      <div class="descriptors stg reveal" style="margin-top:40px;">
+        <div class="d-item">
+          <span class="d-num">01</span>
+          <span class="d-text">Starts at 7PM.</span>
+        </div>
+        <div class="d-item">
+          <span class="d-num">02</span>
+          <span class="d-text">Guests arrive when they arrive. The same night, different versions of it.</span>
+        </div>
+        <div class="d-item">
+          <span class="d-num">03</span>
+          <span class="d-text">A dream. A trip. A live reel you can't scroll away from — <em>because you're inside it.</em></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 11 — PRINCIPLES / THE SPACE            -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s11" class="slide">
+    <div class="vl"></div>
+    <div class="snum">11</div>
+    <div class="inner">
+      <div class="label reveal" style="margin-bottom:16px;">Principles</div>
+      <div class="label-gold reveal" style="margin-bottom:40px;font-size:clamp(18px,3vw,36px);letter-spacing:-.02em;font-weight:900;text-transform:uppercase;">
+        We don't change the location.<br>We work with it.
+      </div>
+      <div class="principles stg reveal">
+        <div class="pr">
+          <div class="pr-title">No common table</div>
+          <div class="pr-body">Multiple zones. You move.<br>You sit. You wander.<br>No assigned anything.</div>
+        </div>
+        <div class="pr">
+          <div class="pr-title">Projection in the corners</div>
+          <div class="pr-body">Fellini on the walls. Silent.<br>Like cobwebs. Like they were always there.</div>
+        </div>
+        <div class="pr">
+          <div class="pr-title">Light & Sound</div>
+          <div class="pr-body">No one-off construction.<br>We curate what's already here.</div>
+        </div>
+        <div class="pr">
+          <div class="pr-title">The location speaks</div>
+          <div class="pr-body">Historic palazzo, Rome.<br>It has its own rules.<br>We listen to them.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 12 — ACTORS / STATISTS                 -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s11b" class="slide" style="padding:64px 96px;">
+    <div class="vl"></div>
+    <div class="snum">—</div>
+    <div style="position:relative;z-index:1;width:100%;display:flex;flex-direction:column;gap:32px;align-items:center;">
+      <div class="label reveal" style="align-self:flex-start;">Projection in the corners — Reference</div>
+      
+      <style>
+        #s11b .loc-carousel {
+          height: 400px;
+          max-width: 600px;
+          background: transparent;
+        }
+        #s11b .loc-carousel .carousel-img {
+          object-fit: scale-down;
+        }
+      </style>
+      
+      <div class="loc-carousel reveal">
+        <img src="proj_1.jpg" class="carousel-img active" alt="Projection ref 1">
+        <img src="proj_2.jpg" class="carousel-img" alt="Projection ref 2">
+        <img src="proj_3.jpg" class="carousel-img" alt="Projection ref 3">
+        <img src="proj_5.jpg" class="carousel-img" alt="Projection ref 5">
+        <div class="loc-arrows">
+          <button class="c-prev">←</button>
+          <button class="c-next">→</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Light — Reference -->
+  <section id="s11c" class="slide" style="padding:64px 96px;">
+    <div class="vl"></div>
+    <div class="snum">—</div>
+    <div style="position:relative;z-index:1;width:100%;display:flex;flex-direction:column;gap:32px;align-items:center;">
+      <div class="label reveal" style="align-self:flex-start;">Light — Reference</div>
+
+      <style>
+        #s11c .loc-carousel {
+          height: 400px;
+          max-width: 600px;
+          background: transparent;
+        }
+        #s11c .loc-carousel .carousel-img {
+          object-fit: scale-down;
+        }
+      </style>
+
+      <div class="loc-carousel reveal">
+        <img src="light_0.jpg" class="carousel-img active" alt="Light ref 1">
+        <img src="light_1.jpg" class="carousel-img" alt="Light ref 2">
+        <img src="light_2.jpg" class="carousel-img" alt="Light ref 3">
+        <div class="loc-arrows">
+          <button class="c-prev">←</button>
+          <button class="c-next">→</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — THE VOICE -->
+  <section id="s10" class="slide">
+    <div class="vl"></div>
+    <div class="snum">10</div>
+    <style>
+      .voice-orb-container {
+        position: absolute;
+        top: 15%;
+        right: 15%;
+        width: 250px;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 0;
+      }
+      @media(max-width: 900px) {
+        .voice-orb-container { right: 5%; top: 10%; width: 150px; height: 150px; }
+      }
+      @media(max-width: 600px) {
+        .voice-orb-container { right: -5%; top: 5%; opacity: 0.5; }
+      }
+      
+      .voice-orb {
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #444, #111, #000);
+        box-shadow: 
+          inset -20px -20px 40px rgba(0,0,0,0.9),
+          inset 10px 10px 20px rgba(255,255,255,0.1),
+          0 0 30px rgba(255,255,255,0.05);
+        animation: floatOrb 18s infinite linear;
+        filter: contrast(1.2) drop-shadow(0 0 10px rgba(0,0,0,0.5));
+      }
+      
+      .voice-aura {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0) 60%);
+        animation: pulseAura 4s infinite ease-in-out;
+      }
+
+      @keyframes floatOrb {
+        0% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-20px) rotate(120deg); }
+        66% { transform: translateY(10px) rotate(240deg); }
+        100% { transform: translateY(0px) rotate(360deg); }
+      }
+      
+      @keyframes pulseAura {
+        0% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.15); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.5; }
+      }
+    </style>
+    <div class="inner" style="position:relative;">
+      
+      <div class="voice-orb-container reveal">
+        <div class="voice-aura"></div>
+        <div class="voice-orb"></div>
+      </div>
+
+      <div class="label reveal" style="margin-bottom:16px; position:relative; z-index:1;">Host</div>
+      <div class="headline reveal" style="position:relative; z-index:1;">THE<br><em>VOICE.</em></div>
+      <div class="body stg reveal" style="position:relative; z-index:1;">
+        <p>We write a play specifically for this evening.</p>
+        <p>A pre-recorded narrator, assembled with sound design
+        and mixed into the space.</p>
+        <p>It navigates through the night. It ties what's happening into a single story.</p>
+        <p class="bright">It sounds like the city thinking. Not like a host.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s12" class="slide">
+    <div class="vl"></div>
+    <div class="snum">12</div>
+    <div class="inner" style="max-width: 1300px; padding: 0 40px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: stretch;">
+        
+        <!-- Left Column: Text -->
+        <div style="display: flex; flex-direction: column; justify-content: center; padding-top: 40px; padding-bottom: 40px;">
+          <div class="label reveal" style="margin-bottom:40px;">The people</div>
+          <div class="headline reveal" style="font-size: min(4vw, 64px); line-height: 1;">20 people<br>you won't notice<br>at first.</div>
+          <div class="items stg reveal" style="margin-top:40px;">
+            <div class="item">
+              <span class="item-n">01</span>
+              <span class="item-t">They speak <strong>only Italian.</strong> Only to each other.</span>
+            </div>
+            <div class="item">
+              <span class="item-n">02</span>
+              <span class="item-t">Actors dissolved in the crowd.</span>
+            </div>
+            <div class="item">
+              <span class="item-n">03</span>
+              <span class="item-t">They introduce strangers. Invite people into a conversation. <strong>Naturally.</strong></span>
+            </div>
+            <div class="item">
+              <span class="item-n">04</span>
+              <span class="item-t">Sometimes they give two strangers <strong>a small task to do together.</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Images -->
+        <div class="loc-carousel reveal" style="height: 50vh; align-self: center; background: transparent; position: relative;">
+          <img src="actor_1.png" class="carousel-img active" alt="Actor reference 1" style="object-fit:scale-down;">
+          <img src="actor_2.png" class="carousel-img" alt="Actor reference 2" style="object-fit:scale-down;">
+          <img src="actor_3.jpg" class="carousel-img" alt="Actor reference 3" style="object-fit:scale-down;">
+          <div class="loc-arrows">
+            <button class="c-prev">←</button>
+            <button class="c-next">→</button>
+          </div>
+          <div class="loc-controls">
+            <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 13 — ACTIVITY: TINTO BRASS LECTURE     -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s18" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">18</div>
+    <div class="inner" style="max-width:1000px;">
+      <div class="act-tag"><span class="label-gold">Scene I — Welcome</span></div>
+      <div class="act-head reveal">Jazz.<br>From the first<br>minute.</div>
+      <div class="act-body stg reveal">
+        <p><em>Gianpaolo Venditti Trio.</em> Live from the door. No announcement.</p>
+        <p>The warmup that doesn't feel like a warmup. Already playing when you walk in.</p>
+        <p>Jazz doesn't ask for attention. It earns it.</p>
+        <p style="margin-top:16px;">
+          <a href="https://www.youtube.com/watch?v=XZjyAXF4vCk" target="_blank"
+             style="font-size:9px;font-weight:700;letter-spacing:.5em;text-transform:uppercase;color:var(--w30);text-decoration:none;border-bottom:1px solid var(--w10);padding-bottom:2px;transition:color .2s,border-color .2s;"
+             onmouseover="this.style.color='var(--white)';this.style.borderColor='var(--w40)'"
+             onmouseout="this.style.color='var(--w30)';this.style.borderColor='var(--w10)'"
+          >Watch on YouTube ↗</a>
+        </p>
+      </div>
+      <div class="loc-carousel reveal" style="height:380px;margin-top:40px;">
+        <img src="jazz1.png" class="carousel-img active" alt="Bass — Gianpaolo Venditti Trio">
+        <img src="jazz2.png" class="carousel-img" alt="Drums — Gianpaolo Venditti Trio">
+        <img src="jazz3.png" class="carousel-img" alt="Piano — Gianpaolo Venditti Trio">
+        <div class="loc-arrows">
+          <button class="c-prev">←</button>
+          <button class="c-next">→</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 13/21 — CHESS GRANDFATHER              -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s21" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">—</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">Scene II</span></div>
+      <div class="act-head reveal">An old man.<br>A chessboard.<br><em>A single spotlight.</em></div>
+      <div class="act-body stg reveal">
+        <p>He sits. He plays. He doesn't need anyone.</p>
+        <p>But if you sit across from him, he'll pour you a drink.</p>
+        <p>People gather. Watch. Some stay.</p>
+        <p><em>He's been here longer than the evening.</em></p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="chess0.jpg" class="carousel-img active" alt="Old man playing chess" style="object-fit:scale-down;">
+        <img src="chess1.jpg" class="carousel-img" alt="Old man playing chess 1" style="object-fit:scale-down;">
+        <img src="chess2.jpg" class="carousel-img" alt="Old man playing chess 2" style="object-fit:scale-down;">
+        <img src="chess3.jpg" class="carousel-img" alt="Old man playing chess 3" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 19 — OPERA SINGER                     -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s19" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">19</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">Scene III</span></div>
+      <div class="act-head reveal">A man<br>stands up.<br><em>No microphone.</em></div>
+      <div class="act-body stg reveal">
+        <p>Italian opera in a closed space without amplification.</p>
+        <p>A physical thing. You feel it in your chest.</p>
+        <p>One time. No encore.</p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="opera1.jpg" class="carousel-img active" alt="Opera Singer 1" style="object-fit:scale-down;">
+        <img src="opera2.jpg" class="carousel-img" alt="Opera Singer 2" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 16 — ACTIVITY: POSTCARDS               -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s16" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">14</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">Scene IV</span></div>
+      <div class="act-head reveal">A table.<br>Postcards.<br>Roman stamps.</div>
+      <div class="act-body stg reveal">
+        <p>Write something to yourself.</p>
+        <p>Or to someone you've been meaning to reach.</p>
+        <p>We mail it tomorrow. From Rome.</p>
+        <p><em>Some things are better said when no one's watching.</em></p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="postcard1.jpg" class="carousel-img active" alt="Postcards 1" style="object-fit:scale-down;">
+        <img src="postcard2.jpg" class="carousel-img" alt="Postcards 2" style="object-fit:scale-down;">
+        <img src="postcard3.jpg" class="carousel-img" alt="Postcards 3" style="object-fit:scale-down;">
+        <img src="postcard4.jpg" class="carousel-img" alt="Postcards 4" style="object-fit:scale-down;">
+        <img src="postcard5.jpg" class="carousel-img" alt="Postcards 5" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 15 — ACTIVITY: LA GRANDE BELLEZZA      -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s15" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">15</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">Scene V</span></div>
+      <div class="act-head reveal">A scene<br>from <em>The Great Beauty.</em><br>Performed live.</div>
+      <div class="act-body stg reveal">
+        <p>Sorrentino's words. In Italian. From memory.</p>
+        <p>A different room. The same feeling.</p>
+        <p>Some things don't translate.<br>They just land.</p>
+      </div>
+      <div style="height:35vh; min-height:250px; max-height:360px; margin-top:3vh;" class="reveal">
+        <img src="live.jpg" alt="La Grande Bellezza Live Scene" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 13 — ACTIVITY: TINTO BRASS LECTURE     -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s13" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">16</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">Scene VI</span></div>
+      <div class="act-head reveal">Tinto.</div>
+      <div class="act-body stg reveal">
+        <p>A standup-lecture on the art of <em>Tinto Brass.</em></p>
+        <p>Erudite. Provocative.</p>
+        <p>Rome has always known the line between art and transgression.</p>
+        <p>Tonight someone draws it live.</p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="tinto_0.jpg" class="carousel-img active" alt="Tinto 0" style="object-fit:scale-down;">
+        <img src="tinto_1.png" class="carousel-img" alt="Tinto 1" style="object-fit:scale-down;">
+        <img src="tinto_2.jpg" class="carousel-img" alt="Tinto 2" style="object-fit:scale-down;">
+        <img src="tinto_3.png" class="carousel-img" alt="Tinto 3" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 14 — ACTIVITY: BURLESQUE / SEX         -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s14" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">17</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">Scene VII</span></div>
+      <div class="act-head reveal">There is a moment<br>in every Roman evening<br>where beauty<br><em>becomes dangerous.</em></div>
+      <div class="act-body stg reveal">
+        <p>It's been that way since Caligula.</p>
+        <p>Burlesque. The gaze. The performance of being watched.</p>
+        <p>We don't shy away from it.</p>
+        <p>In the spirit of Sorrentino: <em>beauty with intent.</em></p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="burl0.jpg" class="carousel-img active" alt="Burlesque 0" style="object-fit:scale-down;">
+        <img src="burl1.jpg" class="carousel-img" alt="Burlesque 1" style="object-fit:scale-down;">
+        <img src="burl3.jpg" class="carousel-img" alt="Burlesque 3" style="object-fit:scale-down;">
+        <img src="burl5.jpg" class="carousel-img" alt="Burlesque 5" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 20 — PASTA MASTERCLASS                 -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s20" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">18</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">The Dough</span></div>
+      <div class="act-head reveal">An Italian Granny.<br><em>Kneading dough.</em></div>
+      <div class="act-body stg reveal">
+        <p>A culinary performance and masterclass.</p>
+        <p>She speaks Italian. To no one in particular.</p>
+        <p>A real Italian grandmother making dough from scratch.</p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="dough0.jpg" class="carousel-img active" alt="Italian Granny 0" style="object-fit:scale-down;">
+        <img src="dough1.jpg" class="carousel-img" alt="Italian Granny 1" style="object-fit:scale-down;">
+        <img src="dough3.jpg" class="carousel-img" alt="Italian Granny 3" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 20B — SKETCHERS                        -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s20b" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">19</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">The Gift</span></div>
+      <div class="act-head reveal">Sketchers<br>in the crowd.<br><em>Unnoticed.</em></div>
+      <div class="act-body stg reveal">
+        <p>Artists walking among the guests, capturing faces on paper.</p>
+        <p>You might not even notice them.</p>
+        <p>On your way out, you are given your portrait. The only physical memory of the night.</p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="scetch1.jpg" class="carousel-img active" alt="Sketch 1" style="object-fit:scale-down;">
+        <img src="scetch2.jpg" class="carousel-img" alt="Sketch 2" style="object-fit:scale-down;">
+        <img src="scetch3.jpg" class="carousel-img" alt="Sketch 3" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 22 — CIGAR ROOM                        -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s22cigar" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">20</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">The Room</span></div>
+      <div class="act-head reveal">A door.<br>A separate room.<br><em>Cigars.</em></div>
+      <div class="act-body stg reveal">
+        <p>Some conversations don't happen at the table.</p>
+        <p>A closed space. For the ones who know why they came.</p>
+        <p>No agenda. That's the point.</p>
+      </div>
+      <div class="photo-placeholder reveal">Photo Placeholder</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 17 — ACTIVITY: CHILDREN'S CHOIR (LAST) -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s17" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">21</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">The Choir</span></div>
+      <div class="act-head reveal">The Choir.</div>
+      <div class="act-body stg reveal">
+        <p>Children's voices fill the room.</p>
+        <p>No announcement. No introduction.</p>
+        <p>They appear. They sing. They leave.</p>
+        <p>&nbsp;</p>
+        <p><em>The evening has a different weight now.</em></p>
+      </div>
+      <div class="loc-carousel reveal" style="height:35vh; min-height:250px; max-height:360px;">
+        <img src="choir0.jpg" class="carousel-img active" alt="Choir 0" style="object-fit:scale-down;">
+        <img src="chore1.jpg" class="carousel-img" alt="Choir 1" style="object-fit:scale-down;">
+        <img src="choir2.jpg" class="carousel-img" alt="Choir 2" style="object-fit:scale-down;">
+        <div class="loc-arrows">
+          <button class="c-prev">&#8592;</button>
+          <button class="c-next">&#8594;</button>
+        </div>
+        <div class="loc-controls">
+          <div class="cdot active"></div><div class="cdot"></div><div class="cdot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 22 — THE LOCATION TITLE                -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s22" class="slide">
+    <div class="snum">22</div>
+    <div class="title-wrap reveal" style="text-align:center;">
+      <div class="ghost">Where it all connects</div>
+      <div style="position:relative;">
+        <div style="font-size:clamp(56px,10vw,120px);font-weight:900;letter-spacing:-.04em;text-transform:uppercase;color:var(--white);font-family:'Inter',sans-serif;">The Locations</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 19 — VILLA AURELIA                     -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s23" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">23</div>
+    <div class="inner" style="max-width:900px;">
+      <div class="act-head reveal" style="margin-bottom:16px;">
+        <a href="https://www.google.com/maps/place/Villa+Aurelia/@41.8893631,12.4645125,17z" target="_blank" style="color:var(--white);text-decoration:none;border-bottom:2px solid var(--w30);">Villa Aurelia</a>
+      </div>
+      <div class="act-body stg reveal"><p>Largo di Porta S. Pancrazio, 1, 00153 Roma</p></div>
+      <div class="photo-placeholder reveal" style="height:400px;">Photos — to be added</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 20 — LEMON GARDEN                      -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s24" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">24</div>
+    <div class="inner" style="max-width:900px;">
+      <div class="act-head reveal" style="margin-bottom:16px;">
+        <a href="https://www.google.com/maps/place/Villa+Aurelia/@41.8893631,12.4645125,17z" target="_blank" style="color:var(--white);text-decoration:none;border-bottom:2px solid var(--w30);">Lemon Garden</a>
+      </div>
+      <div class="act-body stg reveal"><p>Villa Aurelia Gardens</p></div>
+      <div class="photo-placeholder reveal" style="height:400px;">Photos — to be added</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 21 — SALA AURELIA                      -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s25" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">25</div>
+    <div class="inner" style="max-width:900px;">
+      <div class="act-head reveal" style="margin-bottom:16px;">
+        <a href="https://www.google.com/maps/place/Villa+Aurelia/@41.8893631,12.4645125,17z" target="_blank" style="color:var(--white);text-decoration:none;border-bottom:2px solid var(--w30);">Sala Aurelia</a>
+      </div>
+      <div class="act-body stg reveal"><p>Salone &amp; Terraces</p></div>
+      <div class="photo-placeholder reveal" style="height:400px;">Photos — to be added</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 26A — THE CATERING TITLE               -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s26a" class="slide">
+    <div class="snum">26</div>
+    <div class="title-wrap reveal" style="text-align:center;">
+      <div class="ghost">Food &amp; Drinks</div>
+      <div style="position:relative;">
+        <div style="font-size:clamp(56px,10vw,120px);font-weight:900;letter-spacing:-.04em;text-transform:uppercase;color:var(--white);font-family:'Inter',sans-serif;">The Table</div>
+      </div>
+      <div class="grule reveal" style="margin:24px auto;max-width:480px;"></div>
+      <div class="body reveal" style="font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--w30);margin-top:8px;">Catering</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 26B — CATERING: THE FOOD               -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s26" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">27</div>
+    <div class="inner">
+      <div class="act-head reveal">Italian kitchen.<br>Classic snacks.<br><em>Modern interpretation.</em></div>
+      <div class="act-body stg reveal">
+        <p>Cocktails, timeless Italian appetizers, and hot dishes reimagined.</p>
+        <p>Everything is served so you can eat, drink, and continue the conversation without being tied to a chair.</p>
+      </div>
+      <div class="photo-placeholder reveal" style="height:320px;">Photos — to be added</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 27 — CATERING: DRINKS                -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s27" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">27</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">The Bar</span></div>
+      <div class="act-head reveal">Wine.<br>Amaro.<br><em>Something you haven't tried.</em></div>
+      <div class="act-body stg reveal">
+        <p>Natural wines. Roman labels. A bartender who knows the difference.</p>
+        <p>The bar is open from the first moment. No token system.</p>
+      </div>
+      <div class="photo-placeholder reveal" style="height:320px;">Photos — to be added</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 28 — CATERING: LATE NIGHT             -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s28" class="slide act-slide">
+    <div class="vl"></div>
+    <div class="snum">28</div>
+    <div class="inner">
+      <div class="act-tag"><span class="label-gold">After Midnight</span></div>
+      <div class="act-head reveal">The table<br>doesn't end<br><em>at dessert.</em></div>
+      <div class="act-body stg reveal">
+        <p>Digestivi. A small cheese board. More wine.</p>
+        <p>The evenings that matter never have a scheduled end.</p>
+      </div>
+      <div class="photo-placeholder reveal" style="height:320px;">Photos — to be added</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 29 — USER JOURNEY                    -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s29" class="slide">
+    <div class="vl"></div>
+    <div class="snum">29</div>
+    <div class="inner">
+      <div class="label reveal" style="margin-bottom:48px;">The evening, from first to last</div>
+      <div class="uj-grid reveal">
+
+        <div class="uj-col">
+          <div class="uj-phase">ACT I</div>
+          <div class="uj-item"><span class="uj-dot"></span><span>Welcome jazz set — already playing</span></div>
+          <div class="uj-item"><span class="uj-dot"></span><span>Old man at a chessboard — spotlight</span></div>
+          <div class="uj-item"><span class="uj-dot"></span><span>Opera singer — stands up, no mic</span></div>
+          <div class="uj-item"><span class="uj-dot"></span><span>Postcards written, mailed from Rome tomorrow</span></div>
+        </div>
+
+        <div class="uj-col">
+          <div class="uj-phase">ACT II</div>
+          <div class="uj-item"><span class="uj-dot uj-dot--gold"></span><span>La Grande Bellezza scene — performed live</span></div>
+          <div class="uj-item"><span class="uj-dot uj-dot--gold"></span><span>Tinto Brass lecture</span></div>
+          <div class="uj-item"><span class="uj-dot uj-dot--gold"></span><span>Burlesque — beauty with intent</span></div>
+          <div class="uj-item"><span class="uj-dot uj-dot--gold"></span><span>Short masterclass — making pasta dough</span></div>
+        </div>
+
+        <div class="uj-col">
+          <div class="uj-phase">ACT III</div>
+          <div class="uj-item"><span class="uj-dot uj-dot--bright"></span><span>Sketchers — drawing unnoticed in the crowd</span></div>
+          <div class="uj-item"><span class="uj-dot uj-dot--bright"></span><span>Cigar room — open all night</span></div>
+          <div class="uj-item"><span class="uj-dot uj-dot--bright"></span><span>Children's choir — appear, sing, leave</span></div>
+          <div class="uj-item"><span class="uj-dot uj-dot--bright"></span><span>On the way out — an envelope. Inside: a portrait.</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 30 — CLOSING                          -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s30" class="slide">
+    <div class="snum">30</div>
+    <div class="inner">
+      <div class="lines stg reveal">
+        <div class="line">You step out into the Roman night.</div>
+        <div class="line bright">You, your witnesses,<br>and eternal beauty.</div>
+      </div>
+      <div class="final reveal">
+        <div class="final-title">I Testimoni</div>
+        <div class="final-sub"><em>The city watches back.</em></div>
+        <div class="credits">Superdudes × <span style="color:var(--gold);">CoinsPaid</span> &nbsp;·&nbsp; Rome, November 2026</div>
+        <div class="credits" style="margin-top: 16px; font-weight: 500;">
+          <a href="mailto:new@superdudes.agency" style="color:var(--w40); text-decoration:none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--w40)'">new@superdudes.agency</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Progress bar
+    const pf = document.getElementById('prog-fill');
+    window.addEventListener('scroll', () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      pf.style.height = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('on');
+          // animate gold rules
+          e.target.querySelectorAll('.grule').forEach(r => r.classList.add('on'));
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal, .stg, .grule').forEach(el => io.observe(el));
+
+    // Flip card: s6 — click toggles front / back
+    (function() {
+      const card      = document.getElementById('s6-card');
+      const cardInner = document.getElementById('s6-card-inner');
+      if (!card || !cardInner) return;
+
+      let flipped = false;
+      card.addEventListener('click', () => {
+        flipped = !flipped;
+        cardInner.classList.toggle('flipped', flipped);
+      });
+    })();
+
+    // Keyboard navigation
+    window.addEventListener('keydown', e => {
+      const ss = Array.from(document.querySelectorAll('.slide'));
+      if (!ss.length) return;
+      const mid = window.innerHeight / 2;
+      let cur = 0;
+      ss.forEach((s, i) => { if (s.getBoundingClientRect().top <= mid) cur = i; });
+      if (['ArrowDown','ArrowRight',' '].includes(e.key)) {
+        e.preventDefault();
+        ss[Math.min(cur + 1, ss.length - 1)]?.scrollIntoView({ behavior: 'smooth' });
+      } else if (['ArrowUp','ArrowLeft'].includes(e.key)) {
+        e.preventDefault();
+        ss[Math.max(cur - 1, 0)]?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // ── Preloader & Team Carousel ──
+    (async function() {
+
+      const SUPABASE_URL  = 'https://ihlyzizdnecykfqslxge.supabase.co';
+      const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlobHl6aXpkbmVjeWtmcXNseGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODgyNzIsImV4cCI6MjA3Mjc2NDI3Mn0.d8ZUEqFKAOqbZQVPloZGN-WCggjlLDGsmEpIgSu-e_I';
+
+      // Fallback images
+      const FALLBACK = [
+        'file:///Users/tomadertev/Documents/Jegors/Breakfast-Superdudes/public/dudes.jpg',
+        'file:///Users/tomadertev/Documents/Jegors/Breakfast-Superdudes/public/enter.jpg',
+        'file:///Users/tomadertev/Documents/Jegors/Breakfast-Superdudes/public/nik.jpg',
+        'file:///Users/tomadertev/Documents/Jegors/Breakfast-Superdudes/public/001.jpg',
+        'file:///Users/tomadertev/Documents/Jegors/Breakfast-Superdudes/public/002.jpg',
+      ];
+
+      const container = document.getElementById('teamCarousel');
+      const dotsEl    = document.getElementById('cDots');
+      const prevBtn   = document.getElementById('cPrev');
+      const nextBtn   = document.getElementById('cNext');
+      const preloader = document.getElementById('preloader');
+
+      let cur = 0;
+      let imgs = [];
+      let dots = [];
+      let timer = null;
+
+      function buildCarousel(srcList) {
+        container.querySelectorAll('.carousel-img').forEach(el => el.remove());
+        dotsEl.innerHTML = '';
+        imgs = []; dots = [];
+
+        srcList.forEach((src, i) => {
+          const img = document.createElement('img');
+          img.src = src; img.alt = '';
+          img.className = 'carousel-img' + (i === 0 ? ' active' : '');
+          container.insertBefore(img, container.querySelector('.carousel-overlay'));
+          imgs.push(img);
+
+          const d = document.createElement('div');
+          d.className = 'cdot' + (i === 0 ? ' active' : '');
+          d.addEventListener('click', () => goTo(i));
+          dotsEl.appendChild(d);
+          dots.push(d);
+        });
+
+        clearInterval(timer);
+        timer = setInterval(() => goTo(cur + 1), 4000);
+      }
+
+      function goTo(n) {
+        if (!imgs.length) return;
+        imgs[cur].classList.remove('active');
+        dots[cur].classList.remove('active');
+        cur = (n + imgs.length) % imgs.length;
+        imgs[cur].classList.add('active');
+        dots[cur].classList.add('active');
+      }
+
+      if(prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(cur - 1); });
+      if(nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(cur + 1); });
+
+      let finalImages = FALLBACK;
+
+      // Try fetching from Supabase with a simple timeout wrapper (optional, but fetch handles itself mostly)
+      // Try fetching from Supabase concurrently
+      try {
+        const promises = [];
+        for (let i = 0; i < 10; i++) {
+          promises.push(
+            fetch(`${SUPABASE_URL}/rest/v1/assets?key=eq.sd_asset_team_${i}&select=value`, {
+              headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json'
+              }
+            }).then(res => res.json()).catch(() => null)
+          );
+        }
+        const results = await Promise.all(promises);
+        const saved = results.filter(data => data && data[0] && data[0].value).map(data => data[0].value);
+        if (saved.length > 0) {
+          finalImages = saved;
+        }
+      } catch (err) {}
+
+      // Preload the final images so there is no layout jump or pop-in
+      await Promise.all(finalImages.map(src => {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve; // proceed even if one fails
+          img.src = src;
+        });
+      }));
+
+      if(container && dotsEl) {
+        buildCarousel(finalImages);
+      }
+
+      // Hide preloader now that images and layout are ready
+      if (preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(() => preloader.remove(), 800);
+      }
+
+    })();
+
+    // ── Projection Carousel (s11b) — Supabase images ──
+    (async function() {
+      const SUPABASE_URL = 'https://ihlyzizdnecykfqslxge.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlobHl6aXpkbmVjeWtmcXNseGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODgyNzIsImV4cCI6MjA3Mjc2NDI3Mn0.d8ZUEqFKAOqbZQVPloZGN-WCggjlLDGsmEpIgSu-e_I';
+
+      const projImgs = Array.from(document.querySelectorAll('#s11b .carousel-img'));
+      if (!projImgs.length) return;
+
+      const promises = projImgs.map((img, i) => {
+        return fetch(`${SUPABASE_URL}/rest/v1/assets?key=eq.sd_asset_proj_${i}&select=value`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data[0] && data[0].value) {
+            img.src = data[0].value;
+          }
+        })
+        .catch(() => null);
+      });
+      await Promise.all(promises);
+    })();
+
+    // ── Light Reference Carousel (s11c) — Supabase images ──
+    (async function() {
+      const SUPABASE_URL = 'https://ihlyzizdnecykfqslxge.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlobHl6aXpkbmVjeWtmcXNseGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODgyNzIsImV4cCI6MjA3Mjc2NDI3Mn0.d8ZUEqFKAOqbZQVPloZGN-WCggjlLDGsmEpIgSu-e_I';
+
+      const lightImgs = Array.from(document.querySelectorAll('#s11c .carousel-img'));
+      if (!lightImgs.length) return;
+
+      const promises = lightImgs.map((img, i) => {
+        return fetch(`${SUPABASE_URL}/rest/v1/assets?key=eq.sd_asset_light_${i}&select=value`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data[0] && data[0].value) {
+            img.src = data[0].value;
+          }
+        })
+        .catch(() => null);
+      });
+      await Promise.all(promises);
+    })();
+
+    // ── Location Carousels ──
+    document.querySelectorAll('.loc-carousel').forEach(container => {
+      let cur = 0;
+      const imgs = container.querySelectorAll('.carousel-img');
+      const dots = container.querySelectorAll('.cdot');
+      const prevBtn = container.querySelector('.c-prev');
+      const nextBtn = container.querySelector('.c-next');
+
+      if (!imgs.length) return;
+
+      function goTo(n) {
+        imgs[cur].classList.remove('active');
+        if (dots[cur]) dots[cur].classList.remove('active');
+        cur = (n + imgs.length) % imgs.length;
+        imgs[cur].classList.add('active');
+        if (dots[cur]) dots[cur].classList.add('active');
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(cur - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(cur + 1); });
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => goTo(i));
+      });
+    });
+  </script>
+</body>
+</html>
