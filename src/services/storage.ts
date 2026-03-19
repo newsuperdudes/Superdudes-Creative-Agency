@@ -2,15 +2,10 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
 
-// Anon client for write operations (respects RLS)
 export const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseReader = supabase;
 
-// Service client for read operations (bypasses RLS to always fetch assets)
-const supabaseReader = supabaseServiceKey
-  ? createClient(supabaseUrl, supabaseServiceKey)
-  : supabase;
 
 const BUCKET_NAME = 'superdudes';
 const TABLE_NAME = 'assets';
