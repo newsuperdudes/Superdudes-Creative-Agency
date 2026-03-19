@@ -2,8 +2,15 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
 
+// Anon client for write operations (respects RLS)
 export const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Service client for read operations (bypasses RLS to always fetch assets)
+const supabaseReader = supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : supabase;
 
 const BUCKET_NAME = 'superdudes';
 const TABLE_NAME = 'assets';
@@ -97,7 +104,7 @@ export const assetStorage = {
 
   async getItem(key: string): Promise<string | null> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseReader
         .from(TABLE_NAME)
         .select('value')
         .eq('key', key)
@@ -141,7 +148,7 @@ export const assetStorage = {
   },
 
   async getAllKeys(): Promise<string[]> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseReader
       .from(TABLE_NAME)
       .select('key');
 
