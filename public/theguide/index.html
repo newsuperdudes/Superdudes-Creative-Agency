@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Membership Club Guide — CryptoProcessing by CoinsPaid × Superdudes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-style: normal !important;
+    }
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gold: #C9A84C;
+      --red: #ef4444;
+      --green: #22c55e;
+      --w5:  rgba(255,255,255,.05);
+      --w10: rgba(255,255,255,.10);
+      --w20: rgba(255,255,255,.20);
+      --w30: rgba(255,255,255,.30);
+      --w40: rgba(255,255,255,.40);
+      --w60: rgba(255,255,255,.60);
+    }
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+    }
+    html, body {
+      width:100%; height:100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--white); color: var(--black); }
+
+    /* noise */
+    body::before {
+      content:""; position:fixed; inset:0;
+      pointer-events:none; z-index:9998;
+      opacity:.06;
+      background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+      animation: grain .4s steps(1) infinite;
+    }
+    @keyframes grain {
+      0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)}
+      20%{transform:translate(-5%,2%)} 30%{transform:translate(3%,-4%)}
+      40%{transform:translate(-2%,6%)} 50%{transform:translate(-4%,2%)}
+      60%{transform:translate(6%,0)} 70%{transform:translate(0,4%)}
+      80%{transform:translate(-6%,0)} 90%{transform:translate(4%,2%)}
+    }
+
+    /* progress bar */
+    #prog { position:fixed; right:28px; top:50%; transform:translateY(-50%);
+      width:1px; height:160px; background:var(--w5); z-index:9000; }
+    #prog-fill { width:100%; background:var(--w30); transform-origin:top; transform:scaleY(0); }
+
+    /* slide base — always fit viewport */
+    .slide {
+      height: 100svh; min-height: 100svh; width: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--w5);
+      padding: 60px 72px;
+      scroll-snap-align: start;
+    }
+    @media(max-width:768px){ .slide{ padding:40px 20px; } }
+
+    /* vertical accent line */
+    .vl { position:absolute; left:48px; top:0; width:1px; height:100%;
+      background:var(--w5); z-index:0; }
+    @media(max-width:768px){ .vl{ left:12px; } }
+
+    /* slide number */
+    .snum { position:absolute; top:24px; right:72px;
+      font-size:9px; font-weight:700; letter-spacing:.4em; text-transform:uppercase;
+      color:var(--w20); z-index:10; }
+    @media(max-width:768px){ .snum{ right:20px; } }
+
+    /* type helpers */
+    .label {
+      font-size:9px; font-weight:700; letter-spacing:.6em;
+      text-transform:uppercase; color:var(--w30);
+    }
+
+    /* animations */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes drawY  { from{transform:scaleY(0)} to{transform:scaleY(1)} }
+    .afy { animation: drawY 2s cubic-bezier(.77,0,.175,1) forwards; transform-origin:top; }
+
+    .reveal { opacity:0; transform:translateY(8px);
+      transition: opacity .9s ease-out, transform .9s ease-out; }
+    .reveal.on { opacity:1; transform:none; }
+
+    .stg > * { opacity:0; transform:translateY(8px);
+      transition: opacity .8s ease-out, transform .8s ease-out; }
+    .stg.on > *:nth-child(1){opacity:1;transform:none;transition-delay:.05s}
+    .stg.on > *:nth-child(2){opacity:1;transform:none;transition-delay:.12s}
+    .stg.on > *:nth-child(3){opacity:1;transform:none;transition-delay:.19s}
+    .stg.on > *:nth-child(4){opacity:1;transform:none;transition-delay:.26s}
+    .stg.on > *:nth-child(5){opacity:1;transform:none;transition-delay:.33s}
+    .stg.on > *:nth-child(6){opacity:1;transform:none;transition-delay:.40s}
+    .stg.on > *:nth-child(7){opacity:1;transform:none;transition-delay:.47s}
+    .stg.on > *:nth-child(8){opacity:1;transform:none;transition-delay:.54s}
+    .stg.on > *:nth-child(9){opacity:1;transform:none;transition-delay:.61s}
+    .stg.on > *:nth-child(10){opacity:1;transform:none;transition-delay:.68s}
+    .stg.on > *:nth-child(11){opacity:1;transform:none;transition-delay:.75s}
+    .stg.on > *:nth-child(12){opacity:1;transform:none;transition-delay:.82s}
+    .stg.on > *:nth-child(13){opacity:1;transform:none;transition-delay:.89s}
+    .stg.on > *:nth-child(14){opacity:1;transform:none;transition-delay:.96s}
+    .stg.on > *:nth-child(15){opacity:1;transform:none;transition-delay:1.03s}
+    .stg.on > *:nth-child(16){opacity:1;transform:none;transition-delay:1.10s}
+
+    .dot { width:6px; height:6px; border-radius:50%; background:var(--white);
+      animation:pulse 2.5s ease-in-out infinite; flex-shrink:0; display:inline-block; }
+
+    /* ═══ COVER ═══ */
+    #s1 { justify-content:center; align-items:flex-start; }
+    #s1 .brand { font-size:clamp(10px,1vw,13px); font-weight:700;
+      letter-spacing:.5em; text-transform:uppercase; color:var(--w30);
+      margin-bottom:40px; display:flex; align-items:center; gap:12px; }
+    #s1 .brand em { color:var(--gold); opacity:.8; font-weight:800; }
+    #s1 h1 { font-size:clamp(44px,9vw,120px); font-weight:900;
+      line-height:.85; letter-spacing:-.05em; text-transform:uppercase;
+      color:var(--white); margin-bottom:32px;
+      animation:fadeUp 1.1s ease-out .1s both; }
+    #s1 .tagline { font-size:clamp(11px,1.1vw,15px); font-weight:300;
+      letter-spacing:.3em; text-transform:uppercase; color:var(--w40);
+      animation:fadeUp 1s ease-out .4s both; }
+    #s1 .tagline em { color:var(--gold); font-weight:600; }
+    #s1 .meta { position:absolute; bottom:32px; left:72px;
+      display:flex; align-items:center; gap:20px;
+      animation:fadeUp 1s ease-out .7s both; }
+    @media(max-width:768px){ #s1 .meta{ left:20px; } }
+
+    /* ═══ DO / DON'T SLIDE FORMAT ═══ */
+    .dd-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      width: 100%;
+      max-width: 1200px;
+      flex: 1;
+      min-height: 0;
+    }
+    @media(max-width:900px){ .dd-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+    .dd-card {
+      position: relative;
+      border: 1px solid var(--w10);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .dd-card-img {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      object-fit: cover;
+      display: block;
+    }
+    .dd-card--dont .dd-card-img {
+      filter: grayscale(1) brightness(0.7);
+    }
+    .dd-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+      z-index: 5;
+    }
+    .dd-badge--do {
+      background: rgba(34,197,94,0.85);
+      color: var(--white);
+      box-shadow: 0 2px 12px rgba(34,197,94,0.4);
+    }
+    .dd-badge--dont {
+      background: rgba(239,68,68,0.85);
+      color: var(--white);
+      box-shadow: 0 2px 12px rgba(239,68,68,0.4);
+    }
+    .dd-caption {
+      padding: 16px 20px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+    }
+    .dd-caption-title {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: .5em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .dd-caption-title.do-title { color: var(--green); }
+    .dd-caption-title.dont-title { color: var(--red); }
+    .dd-caption p {
+      font-size: clamp(11px, 1.2vw, 14px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      line-height: 1.5;
+      color: var(--w60);
+    }
+
+    /* ═══ TOC ═══ */
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      width: 100%;
+      max-width: 1200px;
+    }
+    @media(max-width:900px){ .toc-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width:600px){ .toc-grid { grid-template-columns: repeat(2, 1fr); } }
+    .toc-item {
+      border: 1px solid var(--w5);
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: background .3s, border-color .3s;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .toc-item:hover {
+      background: var(--w5);
+      border-color: var(--w20);
+    }
+    .toc-num {
+      font-size: 9px; font-weight: 700;
+      font-family: monospace;
+      color: var(--w20);
+    }
+    .toc-name {
+      font-size: clamp(12px, 1.4vw, 16px);
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--white);
+      letter-spacing: .02em;
+      line-height: 1.2;
+    }
+    .toc-sub {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--w30);
+    }
+
+    /* ═══ CHECKLIST ═══ */
+    .cl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0 36px;
+      width: 100%;
+      max-width: 1200px;
+      max-height: calc(100svh - 200px);
+      overflow-y: auto;
+    }
+    @media(max-width:900px){ .cl-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:600px){ .cl-grid { grid-template-columns: 1fr; gap: 0; } }
+    .cl-cat {
+      font-size: 8px; font-weight: 700;
+      letter-spacing: .5em; text-transform: uppercase;
+      color: var(--gold); opacity: .7;
+      margin-top: 20px; margin-bottom: 4px;
+    }
+    .cl-cat:first-child { margin-top: 0; }
+    .cl-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--w5);
+      cursor: pointer;
+      transition: opacity .3s;
+    }
+    .cl-item:hover { opacity: 1 !important; }
+    .cl-box {
+      width: 18px; height: 18px;
+      border: 2px solid var(--w20);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .3s;
+    }
+    .cl-box::after {
+      content: '✓'; color: var(--gold);
+      font-size: 12px; font-weight: 900;
+      opacity: 0; transition: opacity .3s;
+    }
+    .cl-item.checked .cl-box { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+    .cl-item.checked .cl-box::after { opacity: 1; }
+    .cl-item.checked .cl-text { color: var(--w20); text-decoration: line-through; text-decoration-color: var(--w10); }
+    .cl-text {
+      font-size: clamp(10px, 1.1vw, 13px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      line-height: 1.5;
+      color: var(--w60);
+      transition: color .3s;
+    }
+
+    /* ═══ CONTACTS ═══ */
+    .contact-final { text-align: center; }
+    .contact-title {
+      font-size: clamp(40px, 7vw, 90px);
+      font-weight: 900;
+      line-height: .85;
+      letter-spacing: -.05em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .contact-sub {
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 300;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: var(--w30);
+    }
+    .contact-sub em { color: var(--gold); font-weight: 600; }
+    .contact-link {
+      margin-top: 48px;
+      border-top: 1px solid var(--w10);
+      padding-top: 24px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: .5em;
+      text-transform: uppercase;
+      color: var(--w20);
+    }
+    .contact-link a {
+      color: var(--w40);
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .contact-link a:hover { color: var(--gold); }
+
+    /* preloader */
+    #preloader {
+      position:fixed; inset:0; z-index:99999;
+      background:var(--black);
+      display:flex; justify-content:center; align-items:center;
+      transition:opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #preloader.hidden { opacity:0; visibility:hidden; }
+    .loader-text {
+      font-size:9px; font-weight:700; letter-spacing:.8em;
+      text-transform:uppercase; color:var(--w30);
+      animation:pulse 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="preloader"><div class="loader-text">Loading</div></div>
+  <div id="prog"><div id="prog-fill"></div></div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 01 — COVER                            -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s1" class="slide">
+    <div class="vl afy"></div>
+    <div style="position:relative;z-index:1;max-width:900px;">
+      <div class="brand reveal">
+        <div class="dot"></div>
+        <span>Superdudes <em>×</em> CryptoProcessing by&nbsp;CoinsPaid</span>
+      </div>
+      <h1 class="reveal">The<br>Membership<br>Club&nbsp;Guide.</h1>
+      <p class="tagline reveal">A framework for running membership club projects</p>
+    </div>
+    <div class="meta">
+      <span class="label" style="opacity:.35;">Global Playbook&nbsp;&nbsp;·&nbsp;&nbsp;2026</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 02 — ABOUT                            -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s2" class="slide">
+    <div class="snum">02</div>
+    <div class="vl"></div>
+    <div style="max-width:900px; position:relative; z-index:1;">
+      <div class="label reveal" style="margin-bottom:32px;">About This Document</div>
+      <h2 class="reveal" style="font-size:clamp(28px,5vw,64px); font-weight:900; line-height:1.05; letter-spacing:-.04em; text-transform:uppercase; color:var(--white); margin-bottom:36px;">
+        One Brand.<br>One Look.<br>Every City.
+      </h2>
+      <div class="reveal" style="border-top:1px solid var(--w10); padding-top:24px;">
+        <p style="font-size:clamp(14px,1.6vw,20px); font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--w60); line-height:1.7;">
+          This guide ensures every <span style="color:var(--gold);">The Club by CryptoProcessing</span> event — regardless of city, agency, or venue — delivers a unified brand experience. Use it as a practical checklist: what must stay consistent, what can adapt locally, and how to verify compliance before launch.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 03 — GUIDELINES TOC                   -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s3" class="slide" style="justify-content:center; align-items:center;">
+    <div class="snum">03</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; align-items:center;">
+      <div class="label reveal" style="margin-bottom:32px;">Guidelines</div>
+      <h2 class="reveal" style="font-size:clamp(24px,4vw,48px); font-weight:900; line-height:1.05; letter-spacing:-.03em; text-transform:uppercase; color:var(--white); margin-bottom:40px; text-align:center;">
+        What Makes<br>The Club
+      </h2>
+      <div class="toc-grid stg reveal">
+        <a href="#s4" class="toc-item"><span class="toc-num">04</span><span class="toc-name">Venue</span><span class="toc-sub">Selection & Type</span></a>
+        <a href="#s5" class="toc-item"><span class="toc-num">05</span><span class="toc-name">Design &<br>Branding</span><span class="toc-sub">Identity & Signage</span></a>
+        <a href="#s6" class="toc-item"><span class="toc-num">06</span><span class="toc-name">Creative &<br>Entertainment</span><span class="toc-sub">Atmosphere & Acts</span></a>
+        <a href="#s7" class="toc-item"><span class="toc-num">07</span><span class="toc-name">Food &<br>Beverages</span><span class="toc-sub">Catering & Service</span></a>
+        <a href="#s8" class="toc-item"><span class="toc-num">08</span><span class="toc-name">Staff &<br>Service</span><span class="toc-sub">Team & Briefing</span></a>
+        <a href="#s9" class="toc-item"><span class="toc-num">09</span><span class="toc-name">Communication<br>& Invites</span><span class="toc-sub">Tone & Materials</span></a>
+        <a href="#s10" class="toc-item"><span class="toc-num">10</span><span class="toc-name">Technical<br>Production</span><span class="toc-sub">Sound & Light</span></a>
+        <a href="#s11" class="toc-item"><span class="toc-num">11</span><span class="toc-name">Security<br>& Access</span><span class="toc-sub">Entry & Control</span></a>
+        <a href="#s12" class="toc-item"><span class="toc-num">12</span><span class="toc-name">Welcome<br>Experience</span><span class="toc-sub">First Impression</span></a>
+        <a href="#s13" class="toc-item"><span class="toc-num">13</span><span class="toc-name">Signage &<br>Wayfinding</span><span class="toc-sub">Navigation & Flow</span></a>
+        <a href="#s15" class="toc-item"><span class="toc-num">14</span><span class="toc-name">Content<br>& Media</span><span class="toc-sub">Photo & Video</span></a>
+        <a href="#s16" class="toc-item"><span class="toc-num">15</span><span class="toc-name">Programme<br>& Flow</span><span class="toc-sub">Timeline & Pace</span></a>
+        <a href="#s17" class="toc-item"><span class="toc-num">16</span><span class="toc-name">Post-Event<br>& Follow-Up</span><span class="toc-sub">Afterglow & Legacy</span></a>
+        <a href="#s18" class="toc-item"><span class="toc-num">17</span><span class="toc-name">Checklist</span><span class="toc-sub">Pre-Launch Audit</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 04 — VENUE                            -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s4" class="slide">
+    <div class="snum">04</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Venue</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Choose a Space That Becomes The&nbsp;Club</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/venue_do.png" alt="Elegant venue" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Choose venues with character — historic villas, blank-canvas warehouses, or atmospheric spaces that can be fully transformed into The&nbsp;Club identity.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/venue_dont.png" alt="Generic conference venue" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>Avoid conference hotels and branded halls where permanent corporate décor conflicts with The Club's identity and cannot be concealed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 05 — DESIGN & BRANDING               -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s5" class="slide">
+    <div class="snum">05</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Design & Branding</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Total Identity Takeover</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/design_do.png" alt="Branded entrance" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Replace all signage, create a Google Maps point as "The Club", rebrand wayfinding, menus, coasters, and napkins. The venue must be unrecognizable.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/design_dont.png" alt="Cluttered branding" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No competing sponsor roll-ups, no heavy single-use plastic constructions. When choosing between projection mapping and a plastic build — choose projection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 06 — CREATIVE & ENTERTAINMENT         -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s6" class="slide">
+    <div class="snum">06</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Creative & Entertainment</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Build a World, Not an Activation</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/creative_do.png" alt="Live jazz trio" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Curate immersive, original entertainment — live jazz, sketch artists, theatrical elements that dissolve into the atmosphere. Commit to the mystery.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/creative_dont.png" alt="Corporate stage" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No generic cover bands. No LED-wall corporate stages. No confetti cannons. The Club is not a conference afterparty.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 07 — FOOD & BEVERAGES                 -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s7" class="slide">
+    <div class="snum">07</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Food & Beverages</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Every Bite Is Part of the Experience</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/food_do.png" alt="Curated catering" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Pre-test all catering with the actual team. Curate presentation — slate plates, branded menus, artisan stations. Beverages are part of the storytelling.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/food_dont.png" alt="Generic buffet" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No chafing dishes. No plastic cups. No generic hotel buffet lines. If it looks like a conference lunch break, it doesn't belong in The Club.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 08 — STAFF & SERVICE                  -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s8" class="slide">
+    <div class="snum">08</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Staff & Service</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Your Team Is the First Impression</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/staff_do.png" alt="Professional staff" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Pre-screen and interview staff. Matching uniforms, full briefing on tone, exclusivity protocols, and guest interaction codes. Every team member must know the event programme and venue layout — ready to answer any guest question.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/staff_dont.png" alt="Unbriefed staff" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No unbriefed, mismatched teams. If staff doesn't understand The Club's atmosphere, guests will feel it instantly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 09 — COMMUNICATION & INVITES          -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s9" class="slide">
+    <div class="snum">09</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Communication & Invites</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Exclusivity Starts Before the Door</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/comms_do.png" alt="Physical invitation" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Physical key-card invitations with QR codes. Exclusive, personal tone. Every touchpoint says: you were chosen.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/comms_dont.png" alt="Mass email blast" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No mass-appeal blasts. No "Everyone is welcome!" No clip-art newsletters. If the invite could be sent to anyone, it shouldn't be sent at all.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 10 — TECHNICAL PRODUCTION             -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s10" class="slide">
+    <div class="snum">10</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Technical Production</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Sound & Light = Magic</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/tech_do.png" alt="Theatrical light setup" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Sound and light are two of the most powerful sensory tools available. Used right, they replace conventional décor entirely. Budget for specialists — this is where the magic lives.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/tech_dont.png" alt="Cheap corporate AV" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No visible cable spaghetti. No plastic podiums. No fluorescent ceiling strips. If the AV looks like a Tuesday morning conference call, it doesn't belong here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 11 — SECURITY & ACCESS                -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s11" class="slide">
+    <div class="snum">11</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Security & Access</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">The Door Is Part of the Experience</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/security_do.png" alt="Exclusive entrance" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Security must be invisible and impeccably polite. Discreet guest verification via tablet. Personal greeting by name. The entrance should feel like arriving at a private residence — no visible security presence, just warmth.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/security_dont.png" alt="Chaotic registration queue" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No queues. No clipboard lists. No "REGISTRATION A-F" paper signs. If guests wait in line with lanyards, the experience is dead before it starts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 12 — WELCOME EXPERIENCE               -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s12" class="slide">
+    <div class="snum">12</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Welcome Experience</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">First 90 Seconds Define Everything</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/welcome_do.png" alt="Luxury welcome ritual" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Welcome cocktail, curated gift, personal host. The first moments should feel like a ritual — an unmistakable signal that this is not an ordinary event.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/welcome_dont.png" alt="Generic badge pickup" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No plastic badge tables. No tote bags of flyers. No "find your own seat." If the welcome feels like checking into a conference, the club identity is gone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 13 — SIGNAGE & WAYFINDING             -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s13" class="slide">
+    <div class="snum">13</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Signage & Wayfinding</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Navigation Is Design, Not Information</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/signage_do.png" alt="Premium branded signage" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Navigation is part of the space and the story. Make it intuitive, functional, and brand it when appropriate. Guests should never feel lost — but they shouldn't feel guided by a hotel concierge either.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/signage_dont.png" alt="Cheap paper signs" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No A4 paper signs taped to walls. No mismatched fonts on easel boards. No over-designed luxury signage. If your wayfinding feels like a hotel lobby, you've missed the point.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 15 — CONTENT & MEDIA                  -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s15" class="slide">
+    <div class="snum">15</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Content & Media</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Content Is Everything</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <div class="dd-card-img" style="background:var(--w5); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:40px;">
+            <div style="font-size:48px; opacity:.3;">📷</div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:.5em; text-transform:uppercase; color:var(--w30); text-align:center;">Vetted by Portfolio<br>& References</div>
+          </div>
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Vet all videographers and photographers through strict portfolio screening. Send each creator a detailed creative brief well in advance.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <div class="dd-card-img" style="background:var(--w5); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:40px; filter:grayscale(1) brightness(0.7);">
+            <div style="font-size:48px; opacity:.3;">📱</div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:.5em; text-transform:uppercase; color:var(--w30); text-align:center;">Unvetted &<br>No Brief</div>
+          </div>
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No random photographers without references. No shooting without a creative direction document. Unguided content will dilute the brand.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 16 — PROGRAMME & FLOW                 -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s16" class="slide">
+    <div class="snum">16</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Programme & Flow</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Zero Dead Time. Ever.</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <div class="dd-card-img" style="background:var(--w5); display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:12px; padding:32px 40px;">
+            <div style="font-size:9px; font-weight:700; letter-spacing:.4em; color:var(--gold); text-transform:uppercase;">Continuous Flow</div>
+            <div style="display:flex; gap:8px; align-items:center; width:100%;">
+              <div style="height:2px; flex:1; background:linear-gradient(90deg, var(--gold), var(--w20));"></div>
+              <div style="width:6px; height:6px; border-radius:50%; background:var(--gold);"></div>
+            </div>
+            <div style="font-size:11px; font-weight:600; color:var(--w40); text-transform:uppercase; letter-spacing:.1em; line-height:1.6;">
+              16:00 → Doors & first cocktail<br>
+              16:15 → Immersive walkthrough begins<br>
+              16:45 → Live performance drops in<br>
+              17:10 → Shift: dinner stations open<br>
+              18:30 → The "moment"<br>
+              19:15 → Flow continues...
+            </div>
+          </div>
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Engage senses — love, passion, curiosity. Create a continuous flow where things happen simultaneously. Guests choose their own journey.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <div class="dd-card-img" style="background:var(--w5); display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:12px; padding:32px 40px; filter:grayscale(1) brightness(0.7);">
+            <div style="font-size:9px; font-weight:700; letter-spacing:.4em; color:var(--w30); text-transform:uppercase;">Dead Zones</div>
+            <div style="display:flex; gap:8px; align-items:center; width:100%;">
+              <div style="height:2px; flex:1; background:var(--w10);"></div>
+              <div style="width:6px; height:6px; border-radius:50%; background:var(--w20);"></div>
+            </div>
+            <div style="font-size:11px; font-weight:600; color:var(--w20); text-transform:uppercase; letter-spacing:.1em; line-height:1.6; text-decoration:line-through;">
+              19:00 → Registration<br>
+              19:30 → Wait for keynote<br>
+              20:00 → CEO presentation<br>
+              20:45 → Q&A panel<br>
+              21:30 → "Free networking"
+            </div>
+          </div>
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No corporate speeches. No "Dear colleagues, allow us to present." No dead time where guests feel abandoned or unsure what to do next.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 17 — POST-EVENT & FOLLOW-UP           -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s17" class="slide">
+    <div class="snum">17</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; display:flex; flex-direction:column; height:100%;">
+      <div class="label reveal" style="margin-bottom:16px;">Post-Event & Follow-Up</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">The Event Doesn't End at the Door</h3>
+      <div class="dd-grid reveal" style="flex:1; min-height:0;">
+        <div class="dd-card dd-card--do">
+          <div class="dd-badge dd-badge--do">✓</div>
+          <img src="img/followup_do.png" alt="Premium post-event" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title do-title">Do</div>
+            <p>Cinematic recap video within 48 hours. Personal thank-you notes. A curated digital lookbook. Content so good, guests share it without being asked.</p>
+          </div>
+        </div>
+        <div class="dd-card dd-card--dont">
+          <div class="dd-badge dd-badge--dont">✕</div>
+          <img src="img/followup_dont.png" alt="Generic follow-up" class="dd-card-img">
+          <div class="dd-caption">
+            <div class="dd-caption-title dont-title">Don't</div>
+            <p>No mass-email surveys. No stock-photo thank-you templates. No phone-quality dumps on social media. If the follow-up feels corporate, the magic is lost.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 18 — CHECKLIST                        -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s18" class="slide" style="justify-content:flex-start; padding-top:40px;">
+    <div class="snum">17</div>
+    <div class="vl"></div>
+    <div style="position:relative; z-index:1; width:100%; max-width:1200px;">
+      <div class="label reveal" style="margin-bottom:16px;">Pre-Launch</div>
+      <h3 class="reveal" style="font-size:clamp(20px,3vw,36px); font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:24px; letter-spacing:-.02em;">Event Compliance Checklist</h3>
+      <div class="cl-grid stg reveal">
+        <!-- COL 1 -->
+        <div>
+          <div class="cl-cat">Venue & Identity</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Google Maps point under "The Club by CryptoProcessing"</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Exterior signage replaced — venue name invisible</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Interior wayfinding rebranded</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Menus, coasters, uniforms carry The Club identity</span>
+          </div>
+
+          <div class="cl-cat">Staff & Service</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Staff pre-screened and interviewed</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Briefed on programme, venue, guest protocols</span>
+          </div>
+        </div>
+
+        <!-- COL 2 -->
+        <div>
+          <div class="cl-cat">Programme & Entertainment</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Zero dead time — every minute accounted for</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">No generic corporate speeches</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Entertainment curated — only gems</span>
+          </div>
+
+          <div class="cl-cat">Food & Beverages</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Catering pre-tested with the team</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">No chafing dishes, no plastic</span>
+          </div>
+
+          <div class="cl-cat">Communication</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Key-card invitations with QR codes</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">No mass-appeal language</span>
+          </div>
+        </div>
+
+        <!-- COL 3 -->
+        <div>
+          <div class="cl-cat">Technical Production</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Sound, light, AV tested on-site</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">All cables hidden</span>
+          </div>
+
+          <div class="cl-cat">Security & Welcome</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Digital guest list on tablets</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Welcome ritual — cocktail, gift, host</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Wayfinding branded into venue</span>
+          </div>
+
+          <div class="cl-cat">Content & Post-Event</div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Photo/video team vetted by portfolio</span>
+          </div>
+          <div class="cl-item" onclick="this.classList.toggle('checked')">
+            <div class="cl-box"></div><span class="cl-text">Post-event recap plan prepared</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 13 — CONTACTS                         -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="s19" class="slide" style="justify-content:center; align-items:center;">
+    <div class="vl afy"></div>
+    <div class="contact-final reveal" style="position:relative; z-index:1;">
+      <div style="font-size:clamp(48px,8vw,120px); font-weight:900; text-transform:uppercase; color:var(--white); letter-spacing:-.04em; line-height:.95; margin-bottom:8px;">Superdudes</div>
+      <div style="font-size:clamp(10px,1.4vw,16px); font-weight:300; text-transform:uppercase; letter-spacing:.5em; color:var(--w30); margin-bottom:64px;">Creative Agency</div>
+      <div style="width:48px; height:1px; background:var(--w20); margin:0 auto 48px;"></div>
+      <a href="mailto:new@superdudes.agency" style="font-size:clamp(14px,2vw,24px); font-weight:600; text-transform:uppercase; letter-spacing:.15em; color:var(--w60); text-decoration:none; transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">new@superdudes.agency</a>
+    </div>
+  </section>
+
+<script>
+  // Progress bar
+  const pf = document.getElementById('prog-fill');
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    pf.style.height = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+  }, { passive: true });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('on');
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal, .stg').forEach(el => io.observe(el));
+
+  // Keyboard navigation
+  window.addEventListener('keydown', e => {
+    const ss = Array.from(document.querySelectorAll('.slide'));
+    if (!ss.length) return;
+    const mid = window.innerHeight / 2;
+    let cur = 0;
+    ss.forEach((s, i) => { if (s.getBoundingClientRect().top <= mid) cur = i; });
+    if (['ArrowDown','ArrowRight',' '].includes(e.key)) {
+      e.preventDefault();
+      ss[Math.min(cur + 1, ss.length - 1)]?.scrollIntoView({ behavior: 'smooth' });
+    } else if (['ArrowUp','ArrowLeft'].includes(e.key)) {
+      e.preventDefault();
+      ss[Math.max(cur - 1, 0)]?.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // Preloader
+  (function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+      preloader.classList.add('hidden');
+      setTimeout(() => preloader.remove(), 600);
+    }
+  })();
+
+  // Smooth scroll for TOC links
+  document.querySelectorAll('.toc-item').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
