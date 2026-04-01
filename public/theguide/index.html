@@ -350,64 +350,39 @@
     #gate {
       position:fixed; inset:0; z-index:999999;
       background:#000;
-      display:flex; justify-content:center; align-items:center;
-      padding:24px;
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      gap:24px;
       transition:opacity .6s ease, visibility .6s ease;
     }
     #gate.hidden { opacity:0; visibility:hidden; pointer-events:none; }
-    .gate-box {
-      width:100%; max-width:420px;
-      padding:48px;
-      border:1px solid rgba(255,255,255,.1);
-      background:#0a0a0a;
-      display:flex; flex-direction:column; gap:32px;
-      box-shadow:0 0 80px rgba(0,0,0,.8);
-    }
-    .gate-bar { width:32px; height:4px; background:#fff; }
     .gate-title {
-      font-size:10px; font-weight:700;
-      text-transform:uppercase; letter-spacing:.8em;
+      font-size:clamp(20px,3vw,32px); font-weight:900;
+      text-transform:uppercase; letter-spacing:.2em;
       color:#fff;
     }
-    .gate-desc {
-      font-size:9px; font-weight:400;
-      text-transform:uppercase; letter-spacing:.3em;
-      line-height:1.8; color:rgba(255,255,255,.3);
+    .gate-sub {
+      font-size:10px; font-weight:400;
+      text-transform:uppercase; letter-spacing:.4em;
+      color:rgba(255,255,255,.3);
     }
     .gate-input {
-      width:100%;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.1);
-      padding:16px;
+      background:transparent;
+      border:none; border-bottom:1px solid rgba(255,255,255,.2);
+      padding:16px 0 8px;
       color:#fff;
       font-family:Inter,sans-serif;
-      font-size:10px; font-weight:600;
-      letter-spacing:.5em;
+      font-size:14px;
+      letter-spacing:.4em;
       text-transform:uppercase;
+      text-align:center;
       outline:none;
-      transition:border-color .3s;
+      width:256px;
+      transition:border-color .3s, color .3s;
     }
-    .gate-input::placeholder { color:rgba(255,255,255,.1); }
-    .gate-input:focus { border-color:rgba(255,255,255,.5); }
-    .gate-error {
-      font-size:9px; font-weight:700;
-      text-transform:uppercase; letter-spacing:.4em;
-      color:#ef4444; display:none;
-    }
-    .gate-error.on { display:block; }
-    .gate-row {
-      display:flex; justify-content:flex-end; align-items:center;
-    }
-    .gate-btn {
-      background:#fff; color:#000;
-      border:none; cursor:pointer;
-      padding:14px 32px;
-      font-family:Inter,sans-serif;
-      font-size:10px; font-weight:700;
-      text-transform:uppercase; letter-spacing:.6em;
-      transition:background .3s;
-    }
-    .gate-btn:hover { background:rgba(255,255,255,.8); }
+    .gate-input::placeholder { color:rgba(255,255,255,.15); }
+    .gate-input:focus { border-color:#fff; }
+    .gate-input.error { color:#ef4444; border-color:#ef4444; }
 
     /* preloader */
     #preloader {
@@ -428,22 +403,13 @@
 
   <!-- GATE -->
   <div id="gate">
-    <div class="gate-box">
-      <div style="display:flex; flex-direction:column; gap:16px;">
-        <div class="gate-bar"></div>
-        <div class="gate-title">Security Protocol</div>
-        <div class="gate-desc">Unauthorized access to the Superdudes project file is strictly prohibited. Enter decryption key to proceed.</div>
-      </div>
-      <form id="gate-form" style="display:flex; flex-direction:column; gap:24px;">
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <input type="password" id="gate-pwd" class="gate-input" placeholder="DECRYPTION KEY" autofocus>
-          <div id="gate-err" class="gate-error">Access Denied: Invalid Protocol Key</div>
-        </div>
-        <div class="gate-row">
-          <button type="submit" class="gate-btn">Authorize</button>
-        </div>
-      </form>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <div class="gate-title">Access Restricted</div>
+      <div class="gate-sub">Enter presentation key</div>
     </div>
+    <form id="gate-form">
+      <input type="password" id="gate-pwd" class="gate-input" placeholder="ENTER KEY" autofocus>
+    </form>
   </div>
 
   <div id="preloader"><div class="loader-text">Loading</div></div>
@@ -1090,7 +1056,6 @@
     const gate = document.getElementById('gate');
     const form = document.getElementById('gate-form');
     const pwd = document.getElementById('gate-pwd');
-    const err = document.getElementById('gate-err');
     const preloader = document.getElementById('preloader');
 
     if (sessionStorage.getItem('sd_gate_auth') === '1') {
@@ -1101,7 +1066,6 @@
         setTimeout(() => preloader.remove(), 600);
       }
     } else {
-      // Hide preloader behind gate
       if (preloader) {
         preloader.classList.add('hidden');
         setTimeout(() => preloader.remove(), 600);
@@ -1110,15 +1074,14 @@
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      if (pwd.value === PASS) {
+      if (pwd.value.trim() === PASS) {
         sessionStorage.setItem('sd_gate_auth', '1');
-        err.classList.remove('on');
         gate.classList.add('hidden');
         setTimeout(() => gate.remove(), 600);
       } else {
-        err.classList.add('on');
         pwd.value = '';
-        pwd.focus();
+        pwd.classList.add('error');
+        setTimeout(() => pwd.classList.remove('error'), 500);
       }
     });
   })();
