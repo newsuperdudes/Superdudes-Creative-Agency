@@ -397,6 +397,40 @@
       text-transform:uppercase; color:var(--w30);
       animation:pulse 1.5s ease-in-out infinite;
     }
+
+    /* checklist result */
+    .cl-result {
+      margin-top:32px; padding:32px 0 0;
+      border-top:1px solid var(--w10);
+      text-align:center;
+      opacity:0; transform:translateY(12px);
+      transition:opacity .5s ease, transform .5s ease;
+    }
+    .cl-result.visible { opacity:1; transform:translateY(0); }
+    .cl-result-bar {
+      width:100%; max-width:480px; height:6px;
+      background:var(--w10); border-radius:3px;
+      margin:0 auto 20px; overflow:hidden;
+    }
+    .cl-result-fill {
+      height:100%; width:0; border-radius:3px;
+      background:linear-gradient(90deg, #ef4444, #f59e0b, #22c55e);
+      transition:width 1s cubic-bezier(.34,1.56,.64,1);
+    }
+    .cl-result-pct {
+      font-size:clamp(36px,5vw,64px); font-weight:900;
+      letter-spacing:-.03em; color:var(--white);
+      line-height:1; margin-bottom:8px;
+    }
+    .cl-result-label {
+      font-size:10px; font-weight:700; letter-spacing:.5em;
+      text-transform:uppercase; margin-bottom:16px;
+    }
+    .cl-result-verdict {
+      font-size:clamp(14px,1.5vw,18px); font-weight:400;
+      color:var(--w50); line-height:1.5;
+      max-width:500px; margin:0 auto;
+    }
   </style>
 </head>
 <body>
@@ -940,7 +974,7 @@
   <!-- 18 — CHECKLIST                        -->
   <!-- ══════════════════════════════════════ -->
   <section id="s18" class="slide" style="justify-content:flex-start; padding-top:40px;">
-    <div class="snum">17</div>
+    <div class="snum">18</div>
     <div class="vl"></div>
     <div style="position:relative; z-index:1; width:100%; max-width:1200px;">
       <div class="label reveal" style="margin-bottom:16px;">Pre-Launch</div>
@@ -1030,6 +1064,14 @@
             <div class="cl-box"></div><span class="cl-text">Post-event recap plan prepared</span>
           </div>
         </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="cl-result" id="cl-result">
+        <div class="cl-result-bar"><div class="cl-result-fill" id="cl-fill"></div></div>
+        <div class="cl-result-pct" id="cl-pct">0%</div>
+        <div class="cl-result-label" id="cl-label" style="color:var(--w30);">SUPERDUDES COMPATIBILITY</div>
+        <div class="cl-result-verdict" id="cl-verdict"></div>
       </div>
     </div>
   </section>
@@ -1123,6 +1165,53 @@
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // Checklist scoring
+  (function() {
+    const items = document.querySelectorAll('#s18 .cl-item');
+    const total = items.length;
+    const result = document.getElementById('cl-result');
+    const fill = document.getElementById('cl-fill');
+    const pctEl = document.getElementById('cl-pct');
+    const label = document.getElementById('cl-label');
+    const verdict = document.getElementById('cl-verdict');
+
+    function getVerdict(pct) {
+      if (pct === 0) return { text: '', color: 'var(--w30)' };
+      if (pct < 30) return { text: 'Not even close. Start from Section 01.', color: '#ef4444' };
+      if (pct < 50) return { text: 'You\\'re thinking about it. That\\'s a start.', color: '#ef4444' };
+      if (pct < 70) return { text: 'Getting warmer. But "almost" doesn\\'t cut it.', color: '#f59e0b' };
+      if (pct < 90) return { text: 'Almost there. The last 10% is what separates good from unforgettable.', color: '#f59e0b' };
+      if (pct < 100) return { text: 'So close. One more look at the details.', color: '#22c55e' };
+      return { text: 'Full compatibility. You\\'re ready to launch.', color: '#22c55e' };
+    }
+
+    function update() {
+      const checked = document.querySelectorAll('#s18 .cl-item.checked').length;
+      const pct = Math.round(checked / total * 100);
+      const v = getVerdict(pct);
+
+      fill.style.width = pct + '%';
+      pctEl.textContent = pct + '%';
+      label.style.color = v.color;
+      verdict.textContent = v.text;
+
+      if (checked > 0) {
+        result.classList.add('visible');
+      } else {
+        result.classList.remove('visible');
+      }
+    }
+
+    items.forEach(item => {
+      const orig = item.getAttribute('onclick');
+      item.removeAttribute('onclick');
+      item.addEventListener('click', function() {
+        this.classList.toggle('checked');
+        update();
+      });
+    });
+  })();
 </script>
 </body>
 </html>
