@@ -1177,13 +1177,13 @@
     const verdict = document.getElementById('cl-verdict');
 
     function getVerdict(pct) {
-      if (pct === 0) return { text: '', color: 'var(--w30)' };
-      if (pct < 30) return { text: 'Not even close. Start from Section 01.', color: '#ef4444' };
-      if (pct < 50) return { text: 'You\\'re thinking about it. That\\'s a start.', color: '#ef4444' };
-      if (pct < 70) return { text: 'Getting warmer. But "almost" doesn\\'t cut it.', color: '#f59e0b' };
-      if (pct < 90) return { text: 'Almost there. The last 10% is what separates good from unforgettable.', color: '#f59e0b' };
-      if (pct < 100) return { text: 'So close. One more look at the details.', color: '#22c55e' };
-      return { text: 'Full compatibility. You\\'re ready to launch.', color: '#22c55e' };
+      if (pct === 0) return { text: "", color: "var(--w30)" };
+      if (pct < 30) return { text: "Not even close. Start from Section 01.", color: "#ef4444" };
+      if (pct < 50) return { text: "You're thinking about it. That's a start.", color: "#ef4444" };
+      if (pct < 70) return { text: "Getting warmer. But 'almost' doesn't cut it.", color: "#f59e0b" };
+      if (pct < 90) return { text: "Almost there. The last 10% is what separates good from unforgettable.", color: "#f59e0b" };
+      if (pct < 100) return { text: "So close. One more look at the details.", color: "#22c55e" };
+      return { text: "Full compatibility. You're ready to launch.", color: "#22c55e" };
     }
 
     function update() {
