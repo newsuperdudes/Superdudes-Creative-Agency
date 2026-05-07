@@ -2,19 +2,32 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
+# SUPERDUDES | REALITY PROTOCOL
 
-This contains everything you need to run your app locally.
+Production website for [superdudes.agency](https://superdudes.agency).
 
-View your app in AI Studio: https://ai.studio/apps/9f8b619b-5554-42d8-a0e8-60869a1dd076
+React 19 + Vite + framer-motion + Tailwind (CDN) + Supabase (asset storage).
+
+## Deployment
+
+> **IMPORTANT: This is the ONLY repo that deploys to `/public_html/` (root) on superdudes.agency.**
+>
+> DO NOT add FTP deploy workflows targeting `/public_html/` from any other repository.
+> This caused a production incident on 2026-05-07 when a placeholder repo overwrote the real site.
+
+- **CI/CD:** GitHub Actions (`deploy.yml`) -- triggers on push to `main` and `workflow_dispatch`
+- **Target:** GoDaddy cPanel FTP -> `/public_html/`
+- **Branch protection:** PRs required to merge into `main`
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js 20+
 
+1. Copy `.env.example` to `.env.local` and fill in Supabase credentials
+2. `npm install`
+3. `npm run dev`
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Asset Management
+
+Project images and metadata are stored in Supabase (`assets` table + `superdudes` storage bucket).
+Use the built-in AssetManager (Shift+U on the site) to upload/manage assets.
