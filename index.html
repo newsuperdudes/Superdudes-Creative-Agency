@@ -236,6 +236,11 @@
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
     <script type="module" src="/index.tsx"></script>
+    <!-- visit beacon -> Supabase ops_site_visits (site=mainsite) -->
+    <script>
+(function(){var b="https://ihlyzizdnecykfqslxge.supabase.co/functions/v1/track-visit?k=sdx27&site=mainsite";
+new Image().src=b+"&e=view&r="+encodeURIComponent(document.referrer||"");})();
+    </script>
 </body>
 
 </html>
