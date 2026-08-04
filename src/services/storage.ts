@@ -7,8 +7,12 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 const supabaseReader = supabase;
 
 
-const BUCKET_NAME = 'superdudes';
 const TABLE_NAME = 'assets';
+
+// Image uploads go to Cloudflare R2 through our Worker. The database record
+// still lives in Supabase - only object storage moved off Supabase.
+const UPLOAD_ENDPOINT = import.meta.env.VITE_UPLOAD_ENDPOINT;
+const UPLOAD_TOKEN = import.meta.env.VITE_UPLOAD_TOKEN;
 
 export const assetStorage = {
   async setItem(key: string, value: string): Promise<void> {
@@ -18,7 +22,7 @@ export const assetStorage = {
     if (value.startsWith('data:image')) {
       try {
         // Compress the image before uploading to reduce size and fix mobile lag
-        const { blob, fileName, fileExt } = await new Promise<{ blob: Blob, fileName: string, fileExt: string }>((resolve, reject) => {
+        const { blob, fileName } = await new Promise<{ blob: Blob, fileName: string, fileExt: string }>((resolve, reject) => {
           const img = new Image();
           img.onload = () => {
             const canvas = document.createElement('canvas');
@@ -62,26 +66,30 @@ export const assetStorage = {
           img.src = value;
         });
 
-        const filePath = `uploads/${fileName}`;
+        // Upload optimized WebP to Cloudflare R2 via the upload Worker.
+        // The Worker holds the R2 binding, so no storage credentials are
+        // shipped to the browser; it returns the public r2.dev URL.
+        const form = new FormData();
+        form.append('file', blob, fileName);
+        form.append('key', fileName);
 
-        // Upload optimized WebP to Supabase Storage
-        const { error: uploadError } = await supabase.storage
-          .from(BUCKET_NAME)
-          .upload(filePath, blob, {
-            upsert: true,
-            contentType: `image/${fileExt}`
-          });
+        const res = await fetch(`${UPLOAD_ENDPOINT}/upload`, {
+          method: 'POST',
+          headers: { 'X-Upload-Token': UPLOAD_TOKEN },
+          body: form
+        });
 
-        if (uploadError) throw uploadError;
+        if (!res.ok) {
+          const detail = await res.text().catch(() => '');
+          throw new Error(`Upload failed (${res.status}): ${detail}`);
+        }
 
-        // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from(BUCKET_NAME)
-          .getPublicUrl(filePath);
+        const { url } = await res.json();
+        if (!url) throw new Error('Upload succeeded but returned no URL');
 
-        finalValue = publicUrl;
+        finalValue = url;
       } catch (error) {
-        console.error('Error uploading image to Supabase Storage:', error);
+        console.error('Error uploading image to R2:', error);
         throw error;
       }
     }
