@@ -29,5 +29,13 @@ React 19 + Vite + framer-motion + Tailwind (CDN) + Supabase (asset storage).
 
 ## Asset Management
 
-Project images and metadata are stored in Supabase (`assets` table + `superdudes` storage bucket).
-Use the built-in AssetManager (Shift+U on the site) to upload/manage assets.
+Project images and metadata are stored in Supabase (`assets` table); image
+files themselves live in Cloudflare R2 behind the upload Worker.
+
+Open the AssetManager with Shift+U, or the dot in the bottom-right corner.
+Reading the site is public; changing anything requires signing in with an
+agency account that has been granted the editor role. The console asks the
+database on every session whether the signed-in user may edit — a local flag
+or a shared password grants nothing.
+
+Accounts are created by an administrator; there is no public sign-up.

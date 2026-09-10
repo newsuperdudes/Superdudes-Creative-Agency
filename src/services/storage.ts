@@ -1,25 +1,30 @@
-import { createClient } from '@supabase/supabase-js';
+import { requireEditorSession } from './auth';
+import { supabase } from './supabaseClient';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
-const supabaseReader = supabase;
-
+export { supabase };
 
 const TABLE_NAME = 'assets';
 
 // Image uploads go to Cloudflare R2 through our Worker. The database record
 // still lives in Supabase - only object storage moved off Supabase.
+// The Worker is authorised with the caller's own access token; there is no
+// shared upload token in the bundle any more.
 const UPLOAD_ENDPOINT = import.meta.env.VITE_UPLOAD_ENDPOINT;
-const UPLOAD_TOKEN = import.meta.env.VITE_UPLOAD_TOKEN;
 
 export const assetStorage = {
   async setItem(key: string, value: string): Promise<void> {
+    // Prove the right to write before touching anything - no upload, no row.
+    const session = await requireEditorSession();
+    const client = supabase!;
+
     // If value is a base64 image, upload to Storage first
     let finalValue = value;
 
     if (value.startsWith('data:image')) {
+      if (!UPLOAD_ENDPOINT) {
+        throw new Error('Image uploads are not available in this build.');
+      }
+
       try {
         // Compress the image before uploading to reduce size and fix mobile lag
         const { blob, fileName } = await new Promise<{ blob: Blob, fileName: string, fileExt: string }>((resolve, reject) => {
@@ -68,18 +73,22 @@ export const assetStorage = {
 
         // Upload optimized WebP to Cloudflare R2 via the upload Worker.
         // The Worker holds the R2 binding, so no storage credentials are
-        // shipped to the browser; it returns the public r2.dev URL.
+        // shipped to the browser; it re-checks this access token against the
+        // database before it writes anything, and returns the public URL.
         const form = new FormData();
         form.append('file', blob, fileName);
         form.append('key', fileName);
 
         const res = await fetch(`${UPLOAD_ENDPOINT}/upload`, {
           method: 'POST',
-          headers: { 'X-Upload-Token': UPLOAD_TOKEN },
+          headers: { Authorization: `Bearer ${session.access_token}` },
           body: form
         });
 
         if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            throw new Error('Your session is no longer allowed to upload images. Please sign in again.');
+          }
           const detail = await res.text().catch(() => '');
           throw new Error(`Upload failed (${res.status}): ${detail}`);
         }
@@ -95,7 +104,7 @@ export const assetStorage = {
     }
 
     // Save/Update in Database
-    const { error: dbError } = await supabase
+    const { error: dbError } = await client
       .from(TABLE_NAME)
       .upsert({ key, value: finalValue }, { onConflict: 'key' });
 
@@ -105,28 +114,32 @@ export const assetStorage = {
     }
   },
 
+  /**
+   * Public read. Returns null when the key does not exist; a failed read
+   * throws, so callers never mistake "we could not load it" for "it is empty".
+   */
   async getItem(key: string): Promise<string | null> {
-    try {
-      const { data, error } = await supabaseReader
-        .from(TABLE_NAME)
-        .select('value')
-        .eq('key', key)
-        .single();
+    if (!supabase) return null;
 
-      if (error) {
-        if (error.code === 'PGRST116') return null; // Not found
-        throw error;
-      }
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .select('value')
+      .eq('key', key)
+      .single();
 
-      return data?.value || null;
-    } catch (error) {
+    if (error) {
+      if (error.code === 'PGRST116') return null; // Not found
       console.error('Error fetching from Supabase:', error);
-      return null;
+      throw error;
     }
+
+    return data?.value || null;
   },
 
   async removeItem(key: string): Promise<void> {
-    const { error } = await supabase
+    await requireEditorSession();
+
+    const { error } = await supabase!
       .from(TABLE_NAME)
       .delete()
       .eq('key', key);
@@ -137,29 +150,48 @@ export const assetStorage = {
     }
   },
 
-  async clear(): Promise<void> {
-    // This is dangerous, but following the interface
-    const { error } = await supabase
+  /**
+   * Delete an explicit, caller-listed set of keys.
+   *
+   * This replaces the old `clear()`, which deleted every row in the table -
+   * including presentations owned by the generator. There is no ownership
+   * column on `assets`, so the only safe scope is the exact list of keys the
+   * caller manages and can name.
+   */
+  async removeItems(keys: string[]): Promise<void> {
+    const unique = [...new Set(keys.filter(Boolean))];
+    if (unique.length === 0) return;
+
+    await requireEditorSession();
+
+    const { error } = await supabase!
       .from(TABLE_NAME)
       .delete()
-      .neq('key', ''); // Delete all
+      .in('key', unique);
 
     if (error) {
-      console.error('Error clearing Supabase:', error);
+      console.error('Error removing assets from Supabase:', error);
       throw error;
     }
   },
 
+  /**
+   * Public read. Throws on failure rather than returning an empty list - an
+   * empty list looks like "there is nothing here", which invites a caller to
+   * recreate and overwrite rows that do exist.
+   */
   async getAllKeys(): Promise<string[]> {
-    const { data, error } = await supabaseReader
+    if (!supabase) return [];
+
+    const { data, error } = await supabase
       .from(TABLE_NAME)
       .select('key');
 
     if (error) {
       console.error('Error fetching keys from Supabase:', error);
-      return [];
+      throw error;
     }
 
-    return data.map(item => item.key);
+    return (data ?? []).map(item => item.key);
   }
 };

@@ -182,7 +182,8 @@ export const Proofs: React.FC = () => {
 
   useEffect(() => {
     const loadMerged = async () => {
-      const merged = await Promise.all(DEFAULT_PROJECTS.map(async (p) => {
+      try {
+        const merged = await Promise.all(DEFAULT_PROJECTS.map(async (p) => {
         const override: Partial<Project> = {};
 
         const title = await assetStorage.getItem(`sd_asset_project_${p.id}_meta_title`);
@@ -210,8 +211,12 @@ export const Proofs: React.FC = () => {
         }
 
         return { ...p, ...override };
-      }));
-      setProjects(merged);
+        }));
+        setProjects(merged);
+      } catch {
+        // Public page: a failed read keeps the built-in project defaults
+        // on screen rather than blanking the section.
+      }
     };
 
     loadMerged();

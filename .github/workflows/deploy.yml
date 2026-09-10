@@ -17,9 +17,10 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_SUPABASE_SERVICE_KEY: ${{ secrets.VITE_SUPABASE_SERVICE_KEY }}
           VITE_UPLOAD_ENDPOINT: ${{ secrets.VITE_UPLOAD_ENDPOINT }}
-          VITE_UPLOAD_TOKEN: ${{ secrets.VITE_UPLOAD_TOKEN }}
+          # No service key and no upload token: every VITE_ value ends up in
+          # the public bundle. Uploads are authorised with the signed-in
+          # editor's own access token instead.
       - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
