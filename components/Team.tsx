@@ -17,9 +17,13 @@ export const Team: React.FC = () => {
   useEffect(() => {
     const loadImages = async () => {
       const savedImages: string[] = [];
-      for (let i = 0; i < 10; i++) {
-        const saved = await assetStorage.getItem(`sd_asset_team_${i}`);
-        if (saved) savedImages.push(saved);
+      try {
+        for (let i = 0; i < 10; i++) {
+          const saved = await assetStorage.getItem(`sd_asset_team_${i}`);
+          if (saved) savedImages.push(saved);
+        }
+      } catch {
+        // Public page: keep whatever loaded, fall back to the defaults.
       }
 
       if (savedImages.length > 0) {

@@ -8,8 +8,12 @@ export const About: React.FC = () => {
 
   React.useEffect(() => {
     const loadBg = async () => {
-      const saved = await assetStorage.getItem('sd_asset_manifest');
-      if (saved) setBgImage(saved);
+      try {
+        const saved = await assetStorage.getItem('sd_asset_manifest');
+        if (saved) setBgImage(saved);
+      } catch {
+        // Public page: a failed read just leaves the default backdrop.
+      }
     };
     
     loadBg();
