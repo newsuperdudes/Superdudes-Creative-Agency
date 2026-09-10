@@ -64,7 +64,7 @@ export const Team: React.FC = () => {
 
           <div className="space-y-24">
             <div className="reveal" style={{ transitionDelay: '0.2s' }}>
-              <span className="text-[25vw] md:text-[15vw] xl:text-[12rem] font-black text-black block leading-[0.8] tracking-[-0.05em] uppercase">70</span>
+              <span className="text-[25vw] md:text-[15vw] xl:text-[12rem] font-black text-black block leading-[0.8] tracking-[-0.05em] uppercase">30</span>
               <p className="text-lg sm:text-xl md:text-2xl font-medium uppercase tracking-[0.4em] text-black/60 mt-8">top-tier dudes</p>
               <p className="text-[10px] font-medium uppercase tracking-[0.5em] text-black/20 mt-4">
                 (the real dude has no gender)
