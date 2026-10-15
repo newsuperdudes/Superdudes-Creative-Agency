@@ -21,6 +21,10 @@ jobs:
           # No service key and no upload token: every VITE_ value ends up in
           # the public bundle. Uploads are authorised with the signed-in
           # editor's own access token instead.
+      # Static text snapshot for AI crawlers (they don't run JS). Never blocks
+      # the deploy: on failure dist/index.html stays exactly as built.
+      - run: npm run prerender
+        continue-on-error: true
       - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
