@@ -2,10 +2,10 @@
 import React from 'react';
 
 const hubs = [
-  { city: "LONDON", ref: "HUB_LDN", address: "UNITED KINGDOM" },
-  { city: "BARCELONA", ref: "HUB_BCN", address: "SPAIN" },
-  { city: "PARIS", ref: "HUB_PAR", address: "FRANCE" },
-  { city: "DUBAI", ref: "HUB_DXB", address: "UNITED ARAB EMIRATES" }
+  { city: "LONDON", ref: "HUB_LDN", address: "71-75 SHELTON STREET, WC2H 9JQ" },
+  { city: "BARCELONA", ref: "HUB_BCN", address: "CARRER ARAGÓ 241" },
+  { city: "PARIS", ref: "HUB_PAR", address: "20 BIS RUE LA FAYETTE, 75009" },
+  { city: "DUBAI", ref: "HUB_DXB", address: "THE MEYDAN HOTEL, MEYDAN RD" }
 ];
 
 export const Footer: React.FC = () => {
