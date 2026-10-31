@@ -11,6 +11,27 @@ const TABLE_NAME = 'assets';
 // shared upload token in the bundle any more.
 const UPLOAD_ENDPOINT = import.meta.env.VITE_UPLOAD_ENDPOINT;
 
+// Some home networks cannot reach r2.dev, so scripts/mirror-assets.mjs copies
+// the site's images onto our own hosting at deploy time. Only files listed in
+// the manifest are swapped: fresh uploads stay on R2 until the next deploy.
+const R2_PUBLIC_PREFIX = 'https://pub-9348f600a2374d408b97c01512a4a260.r2.dev/superdudes/uploads/';
+
+let mirroredFiles: Promise<Set<string>> | null = null;
+
+function loadMirroredFiles(): Promise<Set<string>> {
+  mirroredFiles ??= fetch('/uploads/manifest.json')
+    .then((res) => (res.ok ? res.json() : []))
+    .then((names: string[]) => new Set(names))
+    .catch(() => new Set<string>());
+  return mirroredFiles;
+}
+
+async function preferMirror(value: string): Promise<string> {
+  if (!value.startsWith(R2_PUBLIC_PREFIX)) return value;
+  const name = value.slice(R2_PUBLIC_PREFIX.length);
+  return (await loadMirroredFiles()).has(name) ? `/uploads/${name}` : value;
+}
+
 export const assetStorage = {
   async setItem(key: string, value: string): Promise<void> {
     // Prove the right to write before touching anything - no upload, no row.
@@ -133,7 +154,7 @@ export const assetStorage = {
       throw error;
     }
 
-    return data?.value || null;
+    return data?.value ? preferMirror(data.value) : null;
   },
 
   async removeItem(key: string): Promise<void> {
