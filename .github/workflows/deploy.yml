@@ -13,6 +13,13 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
+      # Copies site images onto our hosting. Never blocks the deploy: on
+      # failure the site keeps loading them from R2.
+      - run: node scripts/mirror-assets.mjs
+        continue-on-error: true
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       - run: npm run build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
