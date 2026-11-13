@@ -164,9 +164,10 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
         </>
       )}
 
-      <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 pointer-events-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-        <span className="text-[8px] font-bold text-white/60 uppercase tracking-[0.4em]">{project.client}</span>
-        <span className="text-[10px] font-black text-white uppercase tracking-widest">{project.title}</span>
+      <div className="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5 z-20 flex pointer-events-none">
+        <span className="bg-black px-1.5 py-1 text-[9px] md:text-[10px] font-bold text-white uppercase tracking-[0.25em] leading-snug">
+          <span className="text-white/60">{project.client} / </span>{project.title}
+        </span>
       </div>
 
       {/* Technical Marker */}
