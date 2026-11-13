@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Inquiry Statement */}
-        <div className="mb-48 pt-32 border-t border-black/5">
+        <div id="contact" className="mb-48 pt-32 border-t border-black/5">
            <div className="flex flex-col gap-4 mb-16">
               <span className="text-[10px] font-medium uppercase tracking-[0.6em] text-black/20">Initiate Communication</span>
               <div className="h-[1px] w-12 bg-black/10"></div>
