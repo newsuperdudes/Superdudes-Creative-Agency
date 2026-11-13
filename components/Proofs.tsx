@@ -131,7 +131,7 @@ const ProofCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }
         <motion.img
           key={currentImgIdx}
           src={project.images[currentImgIdx]}
-          alt={project.title}
+          alt={[project.title, project.client].filter(Boolean).join(' — ') + (project.images.length > 1 ? `, photo ${currentImgIdx + 1} of ${project.images.length}` : '')}
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
