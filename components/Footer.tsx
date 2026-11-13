@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { EmailLink } from './EmailLink';
 
 const hubs = [
   { city: "LONDON", ref: "HUB_LDN", address: "71-75 SHELTON STREET, WC2H 9JQ" },
@@ -33,18 +34,17 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Inquiry Statement */}
-        <div className="mb-48 pt-32 border-t border-black/5">
+        <div id="contact" className="mb-48 pt-32 border-t border-black/5">
            <div className="flex flex-col gap-4 mb-16">
               <span className="text-[10px] font-medium uppercase tracking-[0.6em] text-black/20">Initiate Communication</span>
               <div className="h-[1px] w-12 bg-black/10"></div>
            </div>
-            <a 
-              href="mailto:new@superdudes.agency" 
+            <EmailLink
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[6vw] font-black hover:opacity-40 transition-all leading-[0.85] tracking-[-0.05em] block uppercase break-words"
             >
               <span className="inline-block">new@</span>
               <span className="inline-block">superdudes.agency</span>
-            </a>
+            </EmailLink>
         </div>
 
         {/* Bottom Metadata */}

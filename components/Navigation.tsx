@@ -11,8 +11,8 @@ export const Navigation: React.FC = () => {
           <a href="#proofs" className="text-[10px] font-medium uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors">Proofs</a>
           <a href="#about" className="text-[10px] font-medium uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors">Logic</a>
         </div>
-        <a 
-          href="mailto:new@superdudes.agency" 
+        <a
+          href="#contact"
           className="text-[10px] font-medium uppercase tracking-[0.4em] text-white hover:opacity-40 transition-all"
         >
           Contact
