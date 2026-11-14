@@ -43,10 +43,6 @@ export const Team: React.FC = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
-  const prevImage = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
-
   return (
     <section className="py-32 md:py-64 px-6 md:px-12 bg-white border-t border-black/5 overflow-hidden relative">
 
@@ -80,10 +76,23 @@ export const Team: React.FC = () => {
         </div>
 
         <div className="order-1 md:order-2 relative group overflow-hidden shadow-sm reveal" style={{ transitionDelay: '0.3s' }}>
-          <div className="relative aspect-[4/5] w-full overflow-hidden bg-black">
+          <div
+            className="relative aspect-[4/5] w-full overflow-hidden bg-black cursor-pointer select-none [-webkit-tap-highlight-color:transparent]"
+            onClick={nextImage}
+            role="button"
+            tabIndex={0}
+            aria-label="Next photo"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                nextImage();
+              }
+            }}
+          >
             <AnimatePresence mode="wait">
               <motion.img
                 key={currentIndex}
+                draggable={false}
                 src={images[currentIndex]}
                 alt={`Gang Aesthetic ${currentIndex + 1}`}
                 initial={{ opacity: 0, scale: 1.1 }}
@@ -94,24 +103,8 @@ export const Team: React.FC = () => {
               />
             </AnimatePresence>
 
-            {/* Gallery Controls */}
-            <div className="absolute inset-0 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <button
-                onClick={prevImage}
-                className="w-12 h-12 rounded-full border border-white/20 bg-black/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
-              >
-                <span className="text-xl">←</span>
-              </button>
-              <button
-                onClick={nextImage}
-                className="w-12 h-12 rounded-full border border-white/20 bg-black/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
-              >
-                <span className="text-xl">→</span>
-              </button>
-            </div>
-
             {/* Pagination Dots */}
-            <div className="absolute bottom-6 right-12 flex gap-2">
+            <div className="absolute bottom-6 right-12 flex gap-2 pointer-events-none">
               {images.map((_, idx) => (
                 <div
                   key={idx}
