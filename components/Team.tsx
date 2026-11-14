@@ -18,7 +18,7 @@ export const Team: React.FC = () => {
     const loadImages = async () => {
       const savedImages: string[] = [];
       try {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 12; i++) {
           const saved = await assetStorage.getItem(`sd_asset_team_${i}`);
           if (saved) savedImages.push(saved);
         }
